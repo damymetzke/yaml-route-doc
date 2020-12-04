@@ -15,6 +15,13 @@ plugins:
 rules:
   ### Default Rules ###
   no-console: 0
+  no-unused-vars: 0
+  no-extra-semi: 0
+  semi: 0
+
+  ### Typescript ###
+  '@typescript-eslint/no-extra-semi': error
+  '@typescript-eslint/semi': error
 
   ### import ###
   import/prefer-default-export: 0
