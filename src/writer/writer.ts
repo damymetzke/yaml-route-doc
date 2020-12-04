@@ -1,4 +1,4 @@
 export default interface IWriter
 {
-    write(data: any): string;
+    writeRoute(data: any): string;
 }
