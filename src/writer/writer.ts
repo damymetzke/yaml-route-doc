@@ -1,4 +1,4 @@
 export default interface IWriter
 {
-    writeRoute(data: any): string;
+    writeRoute(data: any): Promise<string>;
 }

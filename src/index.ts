@@ -1,10 +1,12 @@
 import { ArgumentParser } from 'argparse';
 import ConfigData from './config/configData';
+import HtmlWriter from './writer/htmlWriter';
 
 export async function document(configPath: string) {
   const config = new ConfigData();
   await config.load(configPath);
-  console.log(config);
+  const writer = new HtmlWriter();
+  console.log(await writer.writeRoute({}));
 }
 
 const parser = new ArgumentParser();

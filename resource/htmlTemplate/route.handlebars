@@ -1,0 +1,77 @@
+<ul class="route">
+    <h1>{{routeName}}</h1>
+    {{#each method}}
+
+    <div class="method">
+        <h2>{{methodName}}</h2>
+
+        <h3>Description</h3>
+        <p class="description">
+            {{description}}
+        </p>
+
+        <h3>Request Type</h3>
+        <p class="request-type">
+            {{requestType}}
+        </p>
+
+        <h3>Response Type</h3>
+        <p class="response-type">
+            {{responseType}}
+        </p>
+
+        <h3>Request Data</h3>
+        <ul class="request-data">
+
+            {{#each requestData}}
+
+            <li class="request-data-item">
+                <h4>{{dataKey}}</h4>
+                <h5>Description</h5>
+                <p class="data-description">
+                    {{dataDescription}}
+                </p>
+                <h5>Type</h5>
+                <p class="data-type">
+                    {{dataType}}
+                </p>
+                <h5>Restrictions</h5>
+                <p class="data-restrictions">
+                    {{dataRestrictions}}
+                </p>
+            </li>
+
+            {{/each}}
+
+        </ul>
+
+        <h3>Response Data</h3>
+        <ul class="response-data">
+
+            {{#each responseData}}
+
+            <li class="response-data-item">
+                <h4>{{dataKey}}</h4>
+                <h5>Description</h5>
+                <p class="data-description">
+                    {{dataDescription}}
+                </p>
+                <h5>Type</h5>
+                <p class="data-type">
+                    {{dataType}}
+                </p>
+                <h5>Restrictions</h5>
+                <p class="data-restrictions">
+                    {{dataRestrictions}}
+                </p>
+            </li>
+
+            {{/each}}
+
+        </ul>
+
+    </div>
+
+    {{/each}}
+
+</ul>
