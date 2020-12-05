@@ -39,11 +39,11 @@
                 </p>
                 {{/if}}
 
-                {{#if requestparameters}}
+                {{#if requestParameters}}
                 <h3>Request Parameters</h3>
                 <ul class="{{{../global.classPrefix}}}request-parameters">
 
-                    {{#each requestparameters}}
+                    {{#each requestParameters}}
 
                     {{> routeParameter this global=../../global}}
 

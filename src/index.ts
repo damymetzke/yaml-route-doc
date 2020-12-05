@@ -1,42 +1,31 @@
 import { ArgumentParser } from 'argparse';
 import { promises as fs } from 'fs';
 import * as path from 'path';
+import * as yaml from 'yaml';
 import ConfigData from './config/configData';
+import { RouteData } from './data/routeData';
 import HtmlWriter from './writer/htmlWriter';
 
 export async function document(configPath: string) {
   const config = new ConfigData();
   await config.load(configPath);
   const writer = new HtmlWriter();
-  const result = await writer.writeRoute({
-    global: {
-      classPrefix: 'routedoc--',
-      style: config.style,
-    },
-    name: '/api',
-    method: [
-      {
-        verb: 'GET',
-        description: 'Get api data',
-        responseType: 'application/json',
-        responseParameters: [
-          {
-            key: 'foo',
-            description: 'Foo foo',
-            type: 'string',
-          },
-          {
-            key: 'bar',
-            description: 'Bar bar',
-            type: 'int',
-            restrictions: '[0<=n<100]',
-          },
-        ],
-      },
-    ],
+  const files = await fs.readdir(config.routesDir);
+  const results = files.map(async (file) => {
+    const data = yaml.parse((await fs.readFile(path.join(config.routesDir, file))).toString());
+    data.routes.forEach(async (route: any) => {
+      const result = await writer.writeRoute({
+        global: {
+          classPrefix: 'routedoc--',
+          style: config.style,
+        },
+        ...route, // todo: add validation to data
+      });
+      await fs.writeFile(`${path.join(config.outputDir, route.name.replace(/\//g, '_')).replace(/{/g, '_').replace(/}/g, '')}.html`, result);
+    });
   });
 
-  await fs.writeFile(path.join(config.outputDir, 'result.html'), result);
+  await Promise.all(results);
 }
 
 const parser = new ArgumentParser();
