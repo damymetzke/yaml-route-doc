@@ -1,6 +1,7 @@
 export interface GlobalData
 {
     classPrefix?: string;
+    style: string;
 }
 
 export interface ParameterData
@@ -25,7 +26,6 @@ export interface MethodData
 export interface RouteData
 {
     global: GlobalData;
-    style: string;
     name: string;
     method: MethodData[];
 }

@@ -11,8 +11,8 @@ export async function document(configPath: string) {
   const result = await writer.writeRoute({
     global: {
       classPrefix: 'routedoc--',
+      style: config.style,
     },
-    style: config.style,
     name: '/api',
     method: [
       {
