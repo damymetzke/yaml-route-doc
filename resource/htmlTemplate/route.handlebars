@@ -1,9 +1,9 @@
 <ul class="route">
-    <h1>{{routeName}}</h1>
+    <h1>{{name}}</h1>
     {{#each method}}
 
     <div class="method">
-        <h2>{{methodName}}</h2>
+        <h2>{{verb}}</h2>
 
         <h3>Description</h3>
         <p class="description">
@@ -20,24 +20,24 @@
             {{responseType}}
         </p>
 
-        <h3>Request Data</h3>
-        <ul class="request-data">
+        <h3>Request Parameters</h3>
+        <ul class="request-parameters">
 
-            {{#each requestData}}
+            {{#each requestparameters}}
 
-            <li class="request-data-item">
-                <h4>{{dataKey}}</h4>
+            <li class="request-parameter-item">
+                <h4>{{key}}</h4>
                 <h5>Description</h5>
-                <p class="data-description">
-                    {{dataDescription}}
+                <p class="description">
+                    {{description}}
                 </p>
                 <h5>Type</h5>
-                <p class="data-type">
-                    {{dataType}}
+                <p class="type">
+                    {{type}}
                 </p>
                 <h5>Restrictions</h5>
-                <p class="data-restrictions">
-                    {{dataRestrictions}}
+                <p class="restrictionss">
+                    {{restrictions}}
                 </p>
             </li>
 
@@ -45,24 +45,24 @@
 
         </ul>
 
-        <h3>Response Data</h3>
-        <ul class="response-data">
+        <h3>Response Parameters</h3>
+        <ul class="response-parameters">
 
-            {{#each responseData}}
+            {{#each responseParameters}}
 
-            <li class="response-data-item">
-                <h4>{{dataKey}}</h4>
+            <li class="response-parameter-item">
+                <h4>{{key}}</h4>
                 <h5>Description</h5>
-                <p class="data-description">
-                    {{dataDescription}}
+                <p class="description">
+                    {{description}}
                 </p>
                 <h5>Type</h5>
-                <p class="data-type">
-                    {{dataType}}
+                <p class="type">
+                    {{type}}
                 </p>
                 <h5>Restrictions</h5>
-                <p class="data-restrictions">
-                    {{dataRestrictions}}
+                <p class="restrictions">
+                    {{restrictions}}
                 </p>
             </li>
 

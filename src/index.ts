@@ -6,7 +6,29 @@ export async function document(configPath: string) {
   const config = new ConfigData();
   await config.load(configPath);
   const writer = new HtmlWriter();
-  console.log(await writer.writeRoute({}));
+  console.log(await writer.writeRoute({
+    name: '/api',
+    method: [
+      {
+        verb: 'GET',
+        description: 'Get api data',
+        responseType: 'application/json',
+        responseParameters: [
+          {
+            key: 'foo',
+            description: 'Foo foo',
+            type: 'string',
+          },
+          {
+            key: 'bar',
+            description: 'Bar bar',
+            type: 'int',
+            restrictions: '[0<=n<100]',
+          },
+        ],
+      },
+    ],
+  }));
 }
 
 const parser = new ArgumentParser();
