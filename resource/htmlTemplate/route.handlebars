@@ -2,35 +2,35 @@
     <h1>{{name}}</h1>
     {{#each method}}
 
-    <div class="method">
+    <div class="{{{../global.classPrefix}}}method">
         <h2>{{verb}}</h2>
 
         <h3>Description</h3>
-        <p class="description">
+        <p class="{{{../global.classPrefix}}}description">
             {{description}}
         </p>
 
         {{#if requestType}}
         <h3>Request Type</h3>
-        <p class="request-type">
+        <p class="{{{../global.classPrefix}}}request-type">
             {{requestType}}
         </p>
         {{/if}}
 
         {{#if responseType}}
         <h3>Response Type</h3>
-        <p class="response-type">
+        <p class="{{{../global.classPrefix}}}response-type">
             {{responseType}}
         </p>
         {{/if}}
 
         {{#if requestparameters}}
         <h3>Request Parameters</h3>
-        <ul class="request-parameters">
+        <ul class="{{{../global.classPrefix}}}request-parameters">
 
             {{#each requestparameters}}
 
-            {{> routeParameter this}}
+            {{> routeParameter this global=../../global}}
 
             {{/each}}
 
@@ -39,11 +39,11 @@
 
         {{#if responseParameters}}
         <h3>Response Parameters</h3>
-        <ul class="response-parameters">
+        <ul class="{{{../global.classPrefix}}}response-parameters">
 
             {{#each responseParameters}}
 
-            {{> routeParameter this}}
+            {{> routeParameter this global=../../global}}
 
             {{/each}}
 

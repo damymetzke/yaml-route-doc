@@ -7,6 +7,9 @@ export async function document(configPath: string) {
   await config.load(configPath);
   const writer = new HtmlWriter();
   console.log(await writer.writeRoute({
+    global: {
+      classPrefix: 'routedoc--',
+    },
     name: '/api',
     method: [
       {
