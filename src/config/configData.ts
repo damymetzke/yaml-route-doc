@@ -7,6 +7,8 @@ export default class ConfigData {
 
     outputDir: string = '';
 
+    style: string = '';
+
     async load(filePath: string): Promise<this> {
       const fileData = await fs.readFile(filePath);
       const rawData = yaml.parse(fileData.toString());
@@ -17,6 +19,9 @@ export default class ConfigData {
 
       this.routesDir = path.join(path.dirname(filePath), rawData.routesDir);
       this.outputDir = path.join(path.dirname(filePath), rawData.outputDir);
+      this.style = rawData.style
+        ? rawData.style
+        : '';
 
       return this;
     }

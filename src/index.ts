@@ -12,6 +12,7 @@ export async function document(configPath: string) {
     global: {
       classPrefix: 'routedoc--',
     },
+    style: config.style,
     name: '/api',
     method: [
       {

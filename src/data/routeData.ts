@@ -25,6 +25,7 @@ export interface MethodData
 export interface RouteData
 {
     global: GlobalData;
+    style: string;
     name: string;
     method: MethodData[];
 }
