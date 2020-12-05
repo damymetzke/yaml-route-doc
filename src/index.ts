@@ -1,4 +1,6 @@
 import { ArgumentParser } from 'argparse';
+import { promises as fs } from 'fs';
+import * as path from 'path';
 import ConfigData from './config/configData';
 import HtmlWriter from './writer/htmlWriter';
 
@@ -6,7 +8,7 @@ export async function document(configPath: string) {
   const config = new ConfigData();
   await config.load(configPath);
   const writer = new HtmlWriter();
-  console.log(await writer.writeRoute({
+  const result = await writer.writeRoute({
     global: {
       classPrefix: 'routedoc--',
     },
@@ -31,7 +33,9 @@ export async function document(configPath: string) {
         ],
       },
     ],
-  }));
+  });
+
+  await fs.writeFile(path.join(config.outputDir, 'result.html'), result);
 }
 
 const parser = new ArgumentParser();
