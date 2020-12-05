@@ -1,57 +1,75 @@
-<ul class="route">
-    <h1>{{name}}</h1>
-    {{#each method}}
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class="{{{../global.classPrefix}}}method">
-        <h2>{{verb}}</h2>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <h3>Description</h3>
-        <p class="{{{../global.classPrefix}}}description">
-            {{description}}
-        </p>
-
-        {{#if requestType}}
-        <h3>Request Type</h3>
-        <p class="{{{../global.classPrefix}}}request-type">
-            {{requestType}}
-        </p>
+        {{#if style}}
+        <link rel="stylesheet" href="{{{style}}}">
         {{/if}}
 
-        {{#if responseType}}
-        <h3>Response Type</h3>
-        <p class="{{{../global.classPrefix}}}response-type">
-            {{responseType}}
-        </p>
-        {{/if}}
+        <title>Route - {{{name}}}</title>
+    </head>
 
-        {{#if requestparameters}}
-        <h3>Request Parameters</h3>
-        <ul class="{{{../global.classPrefix}}}request-parameters">
+    <body>
+        <div class="route">
+            <h1>{{name}}</h1>
+            {{#each method}}
 
-            {{#each requestparameters}}
+            <div class="{{{../global.classPrefix}}}method">
+                <h2>{{verb}}</h2>
 
-            {{> routeParameter this global=../../global}}
+                <h3>Description</h3>
+                <p class="{{{../global.classPrefix}}}description">
+                    {{description}}
+                </p>
+
+                {{#if requestType}}
+                <h3>Request Type</h3>
+                <p class="{{{../global.classPrefix}}}request-type">
+                    {{requestType}}
+                </p>
+                {{/if}}
+
+                {{#if responseType}}
+                <h3>Response Type</h3>
+                <p class="{{{../global.classPrefix}}}response-type">
+                    {{responseType}}
+                </p>
+                {{/if}}
+
+                {{#if requestparameters}}
+                <h3>Request Parameters</h3>
+                <ul class="{{{../global.classPrefix}}}request-parameters">
+
+                    {{#each requestparameters}}
+
+                    {{> routeParameter this global=../../global}}
+
+                    {{/each}}
+
+                </ul>
+                {{/if}}
+
+                {{#if responseParameters}}
+                <h3>Response Parameters</h3>
+                <ul class="{{{../global.classPrefix}}}response-parameters">
+
+                    {{#each responseParameters}}
+
+                    {{> routeParameter this global=../../global}}
+
+                    {{/each}}
+
+                </ul>
+                {{/if}}
+
+            </div>
 
             {{/each}}
 
-        </ul>
-        {{/if}}
+        </div>
+    </body>
 
-        {{#if responseParameters}}
-        <h3>Response Parameters</h3>
-        <ul class="{{{../global.classPrefix}}}response-parameters">
-
-            {{#each responseParameters}}
-
-            {{> routeParameter this global=../../global}}
-
-            {{/each}}
-
-        </ul>
-        {{/if}}
-
-    </div>
-
-    {{/each}}
-
-</ul>
+</html>
