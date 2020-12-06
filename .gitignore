@@ -3,3 +3,6 @@ lib
 
 # Directory usable for testing
 sandbox
+
+# coverage reports
+test/coverage
