@@ -5,27 +5,24 @@ import * as yaml from 'yaml';
 import ConfigData from './config/configData';
 import { RouteData } from './data/routeData';
 import HtmlWriter from './writer/htmlWriter';
+import parseInput from './parser/parseInput';
 
 export async function document(configPath: string) {
   const config = new ConfigData();
   await config.load(configPath);
   const writer = new HtmlWriter();
-  const files = await fs.readdir(config.routesDir);
-  const results = files.map(async (file) => {
-    const data = yaml.parse((await fs.readFile(path.join(config.routesDir, file))).toString());
-    data.routes.forEach(async (route: any) => {
-      const result = await writer.writeRoute({
-        global: {
-          classPrefix: 'routedoc--',
-          style: config.style,
-        },
-        ...route, // todo: add validation to data
-      });
-      await fs.writeFile(`${path.join(config.outputDir, route.name.replace(/\//g, '_')).replace(/{/g, '_').replace(/}/g, '')}.html`, result);
-    });
-  });
 
-  await Promise.all(results);
+  const routes = await parseInput(config.routesDir);
+  await Promise.all(routes.map(async (route) => {
+    const writtenRoute = await writer.writeRoute({
+      ...route,
+      global: {
+        classPrefix: 'routedoc--',
+        style: config.style,
+      },
+    });
+    await fs.writeFile(`${path.join(config.outputDir, route.name.replace(/\//g, '_')).replace(/{/g, '_').replace(/}/g, '')}.html`, writtenRoute);
+  }));
 }
 
 const parser = new ArgumentParser();
