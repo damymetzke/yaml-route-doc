@@ -1,6 +1,6 @@
 {
-  "name": "yaml-route-documenter",
-  "version": "0.0.0",
+  "name": "yaml-route-doc",
+  "version": "0.1.0",
   "description": "Document HTTP routes using yaml",
   "keywords": [
     "routing",
