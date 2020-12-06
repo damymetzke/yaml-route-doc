@@ -1,7 +1,7 @@
-export default {
+module.exports = {
+  preset: 'ts-jest',
   clearMocks: true,
   coverageDirectory: 'coverage',
-  coverageProvider: 'v8',
   rootDir: 'test',
   testEnvironment: 'node',
 };
