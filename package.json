@@ -39,9 +39,11 @@
   },
   "dependencies": {
     "@types/marked": "^1.2.1",
+    "@types/prompts": "^2.0.9",
     "argparse": "^2.0.1",
     "handlebars": "^4.7.6",
     "marked": "^1.2.5",
+    "prompts": "^2.4.0",
     "yaml": "^1.10.0"
   }
 }
