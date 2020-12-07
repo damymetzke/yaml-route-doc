@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: daily
+      time: '08:00'
+      timezone: Europe/Amsterdam
+    open-pull-requests-limit: 99
+    # Tell Dependabot to increase the version in package.json and package-lock,
+    # instead of the default widen strategy.
+    # https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates#versioning-strategy
+    versioning-strategy: increase
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: daily
+      time: '08:00'
+      timezone: Europe/Amsterdam
