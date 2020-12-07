@@ -13,6 +13,7 @@ export async function document(configPath: string) {
   const writer = await HtmlWriter.create(config);
 
   const routes = await parseInput(config.routesDir);
+  await fs.mkdir(path.join(config.outputDir, 'routes'), { recursive: true });
   await Promise.all(routes.map(async (route) => {
     const writtenRoute = await writer.writeRoute({
       ...route,
@@ -21,6 +22,6 @@ export async function document(configPath: string) {
         style: config.style,
       },
     });
-    await fs.writeFile(`${path.join(config.outputDir, route.name.replace(/\//g, '_')).replace(/{/g, '_').replace(/}/g, '')}.html`, writtenRoute);
+    await fs.writeFile(`${path.join(config.outputDir, 'routes', route.name.replace(/\//g, '_')).replace(/{/g, '_').replace(/}/g, '')}.html`, writtenRoute);
   }));
 }
