@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "eslint ./src/**",
+    "lint": "eslint \"./src/**\"",
     "test": "jest",
     "test-coverage": "jest --coverage"
   },
