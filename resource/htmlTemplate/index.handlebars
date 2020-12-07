@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        {{#if global.style}}
+        <link rel="stylesheet" href="{{{global.style}}}">
+        {{/if}}
+
+        <title>Yaml Route Doc index</title>
+    </head>
+
+    <body>
+        <h1>Yaml Route Doc Index</h1>
+
+        {{#if routes}}
+        <h2>Routes</h2>
+        <nav class="{{{../global.classPrefix}}}route-nav">
+            <ul class="{{{../global.classPrefix}}}route-list">
+
+                {{#each routes}}
+                <li class="{{{../global.classPrefix}}}route-list-item">
+                    <a href="#">{{name}}</a>
+                </li>
+                {{/each}}
+
+            </ul>
+        </nav>
+        {{/if}}
+
+    </body>
+
+</html>
