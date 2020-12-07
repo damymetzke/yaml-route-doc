@@ -21,6 +21,8 @@ async function registerPartials(partialsPath?: string): Promise<void> {
 }
 
 export default class HtmlWriter implements IWriter {
+  #indexTemplate?: handlebars.TemplateDelegate<any>;
+
   #routeTemplate?: handlebars.TemplateDelegate<any>;
 
   async init(config: ConfigData): Promise<this> {
@@ -38,6 +40,12 @@ export default class HtmlWriter implements IWriter {
     return result;
   }
 
+  async writeIndex(data: any): Promise<string> {
+    return this.#indexTemplate
+      ? this.#indexTemplate(data)
+      : '<!-- Problem when generating page -->'; // todo: return error page upon failure
+  }
+
   async writeRoute(data: RouteData): Promise<string> {
     return this.#routeTemplate
       ? this.#routeTemplate(data)
@@ -45,6 +53,7 @@ export default class HtmlWriter implements IWriter {
   }
 
   private async compileTemplates(templatesPath: string): Promise<void> {
+    this.#indexTemplate = handlebars.compile((await fs.readFile(path.join(templatesPath, 'index.handlebars'))).toString());
     this.#routeTemplate = handlebars.compile((await fs.readFile(path.join(templatesPath, 'route.handlebars'))).toString());
   }
 }

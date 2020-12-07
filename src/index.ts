@@ -24,4 +24,13 @@ export async function document(configPath: string) {
     });
     await fs.writeFile(`${path.join(config.outputDir, 'routes', route.name.replace(/\//g, '_')).replace(/{/g, '_').replace(/}/g, '')}.html`, writtenRoute);
   }));
+
+  const writtenIndex = await writer.writeIndex({
+    routes,
+    global: {
+      classPrefix: 'routedoc--',
+      style: config.style,
+    },
+  });
+  await fs.writeFile(path.join(config.outputDir, 'index.html'), writtenIndex);
 }
