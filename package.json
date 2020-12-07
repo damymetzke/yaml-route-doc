@@ -10,6 +10,9 @@
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "bin": {
+    "yamlRouteDoc": "./lib/yamlRouteDoc.js"
+  },
   "scripts": {
     "build": "tsc",
     "lint": "eslint ./src/**",

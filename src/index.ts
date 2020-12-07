@@ -24,10 +24,3 @@ export async function document(configPath: string) {
     await fs.writeFile(`${path.join(config.outputDir, route.name.replace(/\//g, '_')).replace(/{/g, '_').replace(/}/g, '')}.html`, writtenRoute);
   }));
 }
-
-const parser = new ArgumentParser();
-
-parser.add_argument('-c', '--config', { help: 'Set config file', default: 'yamlroutedocumenter.config.yml' });
-
-const args = parser.parse_args();
-document(args.config);
