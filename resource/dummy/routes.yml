@@ -1,0 +1,23 @@
+routes:
+  - name: /home
+    method:
+      - verb: GET
+        description: >
+          This would probably be a *HOME* route.
+          No request type or perameters are defined,
+          this indicates that this route/method should be called with to request data.
+          All descriptions support markdown.
+          ```js
+          console.log('See how I made this code block?');
+          ```
+          > The response type is a MIME type.
+        responseType: text/html
+  - name: /api
+    method:
+      - verb: GET
+        description: Short descriptions can be done inline.
+        responseType: application/json
+      - verb: POST
+        description: Diferent methods are separate, but share the *same* pag.
+        responseType: application/json
+  
