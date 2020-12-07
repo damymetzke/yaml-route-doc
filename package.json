@@ -37,6 +37,7 @@
   "dependencies": {
     "argparse": "^2.0.1",
     "handlebars": "^4.7.6",
+    "marked": "^1.2.5",
     "yaml": "^1.10.0"
   }
 }
