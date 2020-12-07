@@ -15,6 +15,7 @@ async function init() {
   });
   await fs.mkdir(path.join(location.root, 'templates/partials'), { recursive: true });
   await fs.mkdir(path.join(location.root, 'routes'));
+  await fs.mkdir(path.join(location.root, 'styles'));
 
   await Promise.all([
     fs.writeFile(
@@ -22,13 +23,14 @@ async function init() {
       yaml.stringify({
         routesDir: 'routes',
         outputDir: 'output',
-        style: '../style.css',
+        style: 'styles/style.css',
         templates: 'templates',
         partials: 'templates/partials',
       }),
     ),
     fs.copyFile(path.join(__dirname, '../resource/htmlTemplate/route.handlebars'), path.join(location.root, 'templates/route.handlebars')),
     fs.copyFile(path.join(__dirname, '../resource/htmlTemplate/routeParameter.handlebars'), path.join(location.root, 'templates/partials/routeParameter.handlebars')),
+    fs.copyFile(path.join(__dirname, '../resource/style/default.css'), path.join(location.root, 'styles/style.css')),
   ]);
 
   process.exit(0);
