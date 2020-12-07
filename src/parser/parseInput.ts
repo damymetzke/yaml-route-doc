@@ -25,7 +25,7 @@ export default async function parseInput(inputDirectory: string): Promise<RouteD
     const result: RouteData[] = (<RouteData[]>parsedData.routes).map((route): RouteData => ({
       global: { style: '' },
       name: route.name,
-      method: route.method.map((method): MethodData => ({
+      method: route?.method.map((method): MethodData => ({
         ...method,
         description: marked(method.description),
         requestParameters: method.requestParameters
