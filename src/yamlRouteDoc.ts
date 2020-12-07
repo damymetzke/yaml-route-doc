@@ -29,6 +29,7 @@ async function init() {
       }),
     ),
     fs.copyFile(path.join(__dirname, '../resource/htmlTemplate/route.handlebars'), path.join(location.root, 'templates/route.handlebars')),
+    fs.copyFile(path.join(__dirname, '../resource/htmlTemplate/index.handlebars'), path.join(location.root, 'templates/index.handlebars')),
     fs.copyFile(path.join(__dirname, '../resource/htmlTemplate/routeParameter.handlebars'), path.join(location.root, 'templates/partials/routeParameter.handlebars')),
     fs.copyFile(path.join(__dirname, '../resource/style/default.css'), path.join(location.root, 'styles/style.css')),
   ]);
