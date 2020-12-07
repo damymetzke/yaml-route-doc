@@ -9,6 +9,10 @@ export default class ConfigData {
 
     style: string = '';
 
+    templates: string = '';
+
+    partials?: string;
+
     async load(filePath: string): Promise<this> {
       const fileData = await fs.readFile(filePath);
       const rawData = yaml.parse(fileData.toString());
@@ -22,6 +26,8 @@ export default class ConfigData {
       this.style = rawData.style
         ? rawData.style
         : '';
+      this.templates = path.join(path.dirname(filePath), rawData.templates);
+      this.partials = path.join(path.dirname(filePath), rawData.partials);
 
       return this;
     }

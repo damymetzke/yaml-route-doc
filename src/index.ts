@@ -10,7 +10,7 @@ import parseInput from './parser/parseInput';
 export async function document(configPath: string) {
   const config = new ConfigData();
   await config.load(configPath);
-  const writer = new HtmlWriter();
+  const writer = await HtmlWriter.create(config);
 
   const routes = await parseInput(config.routesDir);
   await Promise.all(routes.map(async (route) => {
