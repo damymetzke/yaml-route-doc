@@ -35,6 +35,7 @@
     "typescript": "^4.1.2"
   },
   "dependencies": {
+    "@types/marked": "^1.2.1",
     "argparse": "^2.0.1",
     "handlebars": "^4.7.6",
     "marked": "^1.2.5",

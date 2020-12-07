@@ -1,7 +1,15 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import * as yaml from 'yaml';
-import { RouteData } from '../data/routeData';
+import marked from 'marked';
+import { MethodData, ParameterData, RouteData } from '../data/routeData';
+
+function parameterMapFunction(parameter: ParameterData): ParameterData {
+  return {
+    ...parameter,
+    description: marked(parameter.description),
+  };
+}
 
 export default async function parseInput(inputDirectory: string): Promise<RouteData[]> {
   const files = await fs.readdir(inputDirectory);
@@ -13,7 +21,22 @@ export default async function parseInput(inputDirectory: string): Promise<RouteD
     const rawData = await fs.readFile(path.join(inputDirectory, file));
     const parsedData = yaml.parse(rawData.toString());
     // todo: validate parsed data
-    return <RouteData[]>(parsedData.routes);
+
+    const result: RouteData[] = (<RouteData[]>parsedData.routes).map((route): RouteData => ({
+      global: { style: '' },
+      name: route.name,
+      method: route.method.map((method): MethodData => ({
+        ...method,
+        description: marked(method.description),
+        requestParameters: method.requestParameters
+          ? method.requestParameters.map(parameterMapFunction)
+          : undefined,
+        responseParameters: method.responseParameters
+          ? method.responseParameters.map(parameterMapFunction)
+          : undefined,
+      })),
+    }));
+    return result;
   });
 
   const finishedResults = await Promise.all(results);
