@@ -2,7 +2,7 @@ routes:
   - name: /home
     method:
       - verb: GET
-        description: >
+        description: |
           This would probably be a *HOME* route.
           No request type or perameters are defined,
           this indicates that this route/method should be called with to request data.
