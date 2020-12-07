@@ -5,8 +5,7 @@ The main purpose of this package is:
 1. YAML in
 2. HTML out
 
-Routes can either be documented for internal use,
-or for thrid parties (e.g. when documenting a rest api).
+Routes can either be documented for internal use, or for third parties (e.g. when documenting a REST API).
 
 ## Quick start
 
