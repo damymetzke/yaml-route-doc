@@ -24,7 +24,7 @@ export default class ConfigData {
       this.routesDir = path.join(path.dirname(filePath), rawData.routesDir);
       this.outputDir = path.join(path.dirname(filePath), rawData.outputDir);
       this.style = rawData.style
-        ? rawData.style
+        ? path.join(path.dirname(filePath), rawData.style)
         : '';
       this.templates = path.join(path.dirname(filePath), rawData.templates);
       this.partials = path.join(path.dirname(filePath), rawData.partials);

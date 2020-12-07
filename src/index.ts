@@ -19,7 +19,7 @@ export async function document(configPath: string) {
       ...route,
       global: {
         classPrefix: 'routedoc--',
-        style: config.style,
+        style: '../style.css',
       },
     });
     await fs.writeFile(`${path.join(config.outputDir, 'routes', route.name.replace(/\//g, '_')).replace(/{/g, '_').replace(/}/g, '')}.html`, writtenRoute);
@@ -29,8 +29,10 @@ export async function document(configPath: string) {
     routes,
     global: {
       classPrefix: 'routedoc--',
-      style: config.style,
+      style: 'style.css',
     },
   });
+
   await fs.writeFile(path.join(config.outputDir, 'index.html'), writtenIndex);
+  await fs.copyFile(config.style, path.join(config.outputDir, 'style.css'));
 }

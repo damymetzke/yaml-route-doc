@@ -31,6 +31,8 @@ export default class HtmlWriter implements IWriter {
       this.compileTemplates(config.templates),
     ]);
 
+    handlebars.registerHelper('routeToFile', (routeName) => `${routeName.replace(/\//g, '_').replace(/{/g, '_').replace(/}/g, '')}.html`);
+
     return this;
   }
 
