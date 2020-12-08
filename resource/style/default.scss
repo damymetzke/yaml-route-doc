@@ -1,0 +1,87 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html{
+    background: linear-gradient(to bottom right, #9da8ff, #b8f3f5);
+    color: #2e1c00;
+}
+
+body{
+    margin: 0 auto;
+    width: min(90vw, 1200px);
+}
+
+.route{
+    padding: 50px 0 0 0;
+
+    > h1{
+        margin: 0 auto;
+        text-align: center;
+        font-size: 4rem;
+    }
+}
+
+
+.routedoc--method{
+    padding: 5px;
+    background-color: #abf5c6;
+    border: solid 4px #2e1c00;
+    margin: 5px auto;
+    border-radius: 10px;
+
+    > h2{
+        font-size: 5rem;
+        margin: 2px;
+        border: solid 4px #2e1c00;
+        border-radius: 10px;
+        display: inline-block;
+        color: #004f4b;
+        background-color: rgb(255, 147, 147);
+        padding: 5px;
+    }
+
+    > h3{
+        font-size: 2rem;
+        text-decoration: underline;
+    }
+
+    > p{
+        padding: 5px 0 5px 80px;
+        background-color: #bcf8c6;
+        border-top: solid 2px #2e1c00;
+        border-bottom: solid 2px #2e1c00;
+        margin: 10px -5px;
+
+    }
+
+}
+
+.routedoc--response-parameters, .routedoc--request-parameters{
+    margin: 5px 20px;
+    border: solid 2px #2e1c00;
+    border-radius: 10px;
+    list-style: none;
+    padding: 0;
+}
+
+.parameter-item{
+    padding-left: 20px;
+
+    + .parameter-item{
+    border-top: solid 2px #2e1c00;
+    }   
+
+    h4{
+        font-size: 1.5rem;
+    }
+    
+    h5{
+        border-top: dotted 2px #2e1c00;
+    }
+}
+
