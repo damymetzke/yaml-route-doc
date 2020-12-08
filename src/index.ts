@@ -2,6 +2,7 @@ import { ArgumentParser } from 'argparse';
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import * as yaml from 'yaml';
+import * as sass from 'sass';
 import ConfigData from './config/configData';
 import { RouteData } from './data/routeData';
 import HtmlWriter from './writer/htmlWriter';
@@ -34,5 +35,13 @@ export async function document(configPath: string) {
   });
 
   await fs.writeFile(path.join(config.outputDir, 'index.html'), writtenIndex);
-  await fs.copyFile(config.style, path.join(config.outputDir, 'style.css'));
+  if (/.s[ca]ss$/.test(config.style)) {
+    const renderedCss = sass.renderSync({
+      file: config.style,
+    });
+
+    await fs.writeFile(path.join(config.outputDir, 'style.css'), renderedCss.css);
+  } else {
+    await fs.copyFile(config.style, path.join(config.outputDir, 'style.css'));
+  }
 }
