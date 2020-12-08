@@ -1,3 +1,14 @@
+@use 'sass:map';
+
+$color: (
+    background: (
+        dark: #9da8ff,
+        light: #b8f3f5,
+        alt:  #abf5c6
+    ),
+    foreground: #2e1c00
+);
+
 html {
   box-sizing: border-box;
 }
@@ -7,8 +18,8 @@ html {
 }
 
 html{
-    background: linear-gradient(to bottom right, #9da8ff, #b8f3f5);
-    color: #2e1c00;
+    background: linear-gradient(to bottom right, map.get($color, background, dark), map.get($color, background, light));
+    color: map.get($color, foreground);
 }
 
 body{
@@ -29,15 +40,15 @@ body{
 
 .routedoc--method{
     padding: 5px;
-    background-color: #abf5c6;
-    border: solid 4px #2e1c00;
+    background-color: map.get($color, background, alt);
+    border: solid 4px map.get($color, foreground);
     margin: 5px auto;
     border-radius: 10px;
 
     > h2{
         font-size: 5rem;
         margin: 2px;
-        border: solid 4px #2e1c00;
+        border: solid 4px map.get($color, foreground);
         border-radius: 10px;
         display: inline-block;
         color: #004f4b;
@@ -53,8 +64,8 @@ body{
     > p{
         padding: 5px 0 5px 80px;
         background-color: #bcf8c6;
-        border-top: solid 2px #2e1c00;
-        border-bottom: solid 2px #2e1c00;
+        border-top: solid 2px map.get($color, foreground);
+        border-bottom: solid 2px map.get($color, foreground);
         margin: 10px -5px;
 
     }
@@ -63,7 +74,7 @@ body{
 
 .routedoc--response-parameters, .routedoc--request-parameters{
     margin: 5px 20px;
-    border: solid 2px #2e1c00;
+    border: solid 2px map.get($color, foreground);
     border-radius: 10px;
     list-style: none;
     padding: 0;
@@ -73,7 +84,7 @@ body{
     padding-left: 20px;
 
     + .parameter-item{
-    border-top: solid 2px #2e1c00;
+    border-top: solid 2px map.get($color, foreground);
     }   
 
     h4{
@@ -81,7 +92,7 @@ body{
     }
     
     h5{
-        border-top: dotted 2px #2e1c00;
+        border-top: dotted 2px map.get($color, foreground);
     }
 }
 
