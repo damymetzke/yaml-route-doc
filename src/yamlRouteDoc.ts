@@ -34,7 +34,7 @@ async function init(args: any) {
     fs.copyFile(path.join(__dirname, '../resource/htmlTemplate/route.handlebars'), path.join(location.root, 'templates/route.handlebars')),
     fs.copyFile(path.join(__dirname, '../resource/htmlTemplate/index.handlebars'), path.join(location.root, 'templates/index.handlebars')),
     fs.copyFile(path.join(__dirname, '../resource/htmlTemplate/routeParameter.handlebars'), path.join(location.root, 'templates/partials/routeParameter.handlebars')),
-    fs.copyFile(path.join(__dirname, '../resource/style/default.css'), path.join(location.root, 'styles/style.css')),
+    fs.copyFile(path.join(__dirname, '../resource/style/default.scss'), path.join(location.root, 'styles/style.scss')),
     ...(await fs.readdir(path.join(__dirname, '../resource/dummy'))).map((file) => fs.copyFile(path.join(__dirname, '../resource/dummy', file), path.join(location.root, 'routes', file))),
   ]);
 
