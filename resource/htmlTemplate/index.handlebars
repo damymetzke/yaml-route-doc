@@ -30,6 +30,21 @@
         </nav>
         {{/if}}
 
+        {{#if groups}}
+        <h2>Groups</h2>
+        <nav class="{{{../global.classPrefix}}}group-nav">
+            <ul class="{{{../global.classPrefix}}}group-list">
+
+                {{#each groups}}
+                <li class="{{{../global.classPrefix}}}group-list-item">
+                    <a href="groups/{{{routeToFile name}}}">{{name}}</a>
+                </li>
+                {{/each}}
+
+            </ul>
+        </nav>
+        {{/if}}
+
     </body>
 
 </html>

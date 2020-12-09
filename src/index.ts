@@ -19,7 +19,7 @@ export async function document(configPath: string) {
     },
   };
   await fs.mkdir(path.join(config.outputDir, 'routes'), { recursive: true });
-  await fs.mkdir(path.join(config.outputDir, 'groups'));
+  await fs.mkdir(path.join(config.outputDir, 'groups'), { recursive: true });
   await Promise.all(data.routes.map(async (route) => {
     const writtenRoute = await writer.writeRoute(route, {
       ...data.global,
