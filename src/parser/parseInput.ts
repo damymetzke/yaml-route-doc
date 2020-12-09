@@ -13,6 +13,23 @@ function parameterMapFunction(parameter: ParameterData): ParameterData {
   };
 }
 
+function routeOrGroupSortFunction(a: RouteData | GroupData, b: RouteData | GroupData): number {
+  const nameA = a.name.split('/');
+  const nameB = b.name.split('/');
+
+  for (let i = 0; i < Math.min(nameA.length, nameB.length); ++i) {
+    if (nameA[i] === nameB[i]) {
+      continue;
+    }
+
+    return nameA[i] < nameB[i]
+      ? -1
+      : 1;
+  }
+
+  return nameA.length - nameB.length;
+}
+
 export default async function parseInput(inputDirectory: string): Promise<Omit<AllData, 'global'>> {
   const files = await fs.readdir(inputDirectory);
   const results: Partial<Omit<AllData, 'global'>>[] = await Promise.all(files.map(async (file) => {
@@ -43,10 +60,15 @@ export default async function parseInput(inputDirectory: string): Promise<Omit<A
   }));
 
   const finishedResults = await Promise.all(results);
-  return finishedResults
+  const mergedResult = finishedResults
     .reduce((total: Omit<AllData, 'global'>, current) => ({
       routes: [...total.routes, ...(current.routes ? current.routes : [])],
       groups: [...total.groups, ...(current.groups ? current.groups : [])],
     }),
     { routes: [], groups: [] });
+
+  mergedResult.routes.sort(routeOrGroupSortFunction);
+  mergedResult.groups.sort(routeOrGroupSortFunction);
+
+  return mergedResult;
 }
