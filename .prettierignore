@@ -1,0 +1,11 @@
+node_modules
+lib
+
+# Directory usable for testing
+sandbox
+
+# coverage reports
+test/coverage
+
+# ignore Handlebars templates as Prettier cannot parse this yet
+*.handlebars
