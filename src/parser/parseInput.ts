@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as yaml from 'yaml';
 import marked from 'marked';
 import {
-  MethodData, ParameterData, RouteData, AllData,
+  MethodData, ParameterData, RouteData, AllData, GroupData,
 } from '../data';
 
 function parameterMapFunction(parameter: ParameterData): ParameterData {
@@ -15,7 +15,7 @@ function parameterMapFunction(parameter: ParameterData): ParameterData {
 
 export default async function parseInput(inputDirectory: string): Promise<Omit<AllData, 'global'>> {
   const files = await fs.readdir(inputDirectory);
-  const results = await files.map(async (file) => {
+  const results: Partial<Omit<AllData, 'global'>>[] = await Promise.all(files.map(async (file) => {
     if ((await fs.stat(path.join(inputDirectory, file))).isDirectory()) {
       return parseInput(path.join(inputDirectory, file));
     }
@@ -24,8 +24,8 @@ export default async function parseInput(inputDirectory: string): Promise<Omit<A
     const parsedData = yaml.parse(rawData.toString());
     // todo: validate parsed data
 
-    const result: RouteData[] = (<RouteData[]>parsedData.routes)
-      .map((route) => ({
+    return {
+      routes: (<RouteData[]>parsedData.routes)?.map((route) => ({
         name: route.name,
         method: route?.method.map((method): MethodData => ({
           ...method,
@@ -37,12 +37,16 @@ export default async function parseInput(inputDirectory: string): Promise<Omit<A
             ? method.responseParameters.map(parameterMapFunction)
             : undefined,
         })),
-      }));
-    return { routes: result };
-  });
+      })),
+      groups: <GroupData[]>parsedData.groups,
+    };
+  }));
 
   const finishedResults = await Promise.all(results);
   return finishedResults
-    .reduce((total, current) => ({ routes: [...total.routes, ...current.routes] }),
-      { routes: [] });
+    .reduce((total: Omit<AllData, 'global'>, current) => ({
+      routes: [...total.routes, ...(current.routes ? current.routes : [])],
+      groups: [...total.groups, ...(current.groups ? current.groups : [])],
+    }),
+    { routes: [], groups: [] });
 }
