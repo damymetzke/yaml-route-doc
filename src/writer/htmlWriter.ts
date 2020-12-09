@@ -2,7 +2,7 @@ import * as handlebars from 'handlebars';
 import * as path from 'path';
 import { promises as fs } from 'fs';
 import IWriter from './writer';
-import { GlobalData, RouteData } from '../data';
+import { AllData, GlobalData, RouteData } from '../data';
 import ConfigData from '../config/configData';
 
 async function registerPartials(partialsPath?: string): Promise<void> {
@@ -42,15 +42,15 @@ export default class HtmlWriter implements IWriter {
     return result;
   }
 
-  async writeIndex(data: any): Promise<string> {
+  async writeIndex(data: AllData): Promise<string> {
     return this.#indexTemplate
       ? this.#indexTemplate(data)
       : '<!-- Problem when generating page -->'; // todo: return error page upon failure
   }
 
-  async writeRoute(data: RouteData & {global: GlobalData}): Promise<string> {
+  async writeRoute(data: RouteData, global: GlobalData): Promise<string> {
     return this.#routeTemplate
-      ? this.#routeTemplate(data)
+      ? this.#routeTemplate({ ...data, global })
       : '<!-- Problem when generating page -->'; // todo: return error page upon failure
   }
 
