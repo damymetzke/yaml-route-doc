@@ -2,7 +2,9 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 import * as yaml from 'yaml';
 import marked from 'marked';
-import { MethodData, ParameterData, RouteData } from '../data';
+import {
+  MethodData, ParameterData, RouteData, GlobalData,
+} from '../data';
 
 function parameterMapFunction(parameter: ParameterData): ParameterData {
   return {
@@ -22,20 +24,21 @@ export default async function parseInput(inputDirectory: string): Promise<RouteD
     const parsedData = yaml.parse(rawData.toString());
     // todo: validate parsed data
 
-    const result: RouteData[] = (<RouteData[]>parsedData.routes).map((route): RouteData => ({
-      global: { style: '' },
-      name: route.name,
-      method: route?.method.map((method): MethodData => ({
-        ...method,
-        description: marked(method.description),
-        requestParameters: method.requestParameters
-          ? method.requestParameters.map(parameterMapFunction)
-          : undefined,
-        responseParameters: method.responseParameters
-          ? method.responseParameters.map(parameterMapFunction)
-          : undefined,
-      })),
-    }));
+    const result: (RouteData & {global: GlobalData})[] = (<RouteData[]>parsedData.routes)
+      .map((route) => ({
+        global: { style: '' },
+        name: route.name,
+        method: route?.method.map((method): MethodData => ({
+          ...method,
+          description: marked(method.description),
+          requestParameters: method.requestParameters
+            ? method.requestParameters.map(parameterMapFunction)
+            : undefined,
+          responseParameters: method.responseParameters
+            ? method.responseParameters.map(parameterMapFunction)
+            : undefined,
+        })),
+      }));
     return result;
   });
 
