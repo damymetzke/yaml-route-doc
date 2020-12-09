@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        {{#if global.style}}
+        <link rel="stylesheet" href="{{{global.style}}}">
+        {{/if}}
+
+        <title>Group - {{name}}</title>
+    </head>
+
+    <body>
+        <div class="{{{global.classPrefix}}}group">
+            <h1>{{name}}</h1>
+            <h3>{{description}}</h3>
+            <div class="{{{global.classPrefix}}}description">
+                {{{description}}}
+            </div>
+            <h3>Inherited variables</h3>
+            <div class="{{{global.classPrefix}}}variables">
+                <h4>Request Type</h4>
+                <p class="{{{global.classPrefix}}}request-type">
+                    {{variables.requestType}}
+                </p>
+                <h4>Response Type</h4>
+                <p class="{{{global.classPrefix}}}response-type">
+                    {{variables.responseType}}
+                </p>
+            </div>
+        </div>
+    </body>
+
+</html>
