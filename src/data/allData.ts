@@ -1,4 +1,5 @@
-import { RouteData, GlobalData } from './routeData';
+import RouteData from './routeData';
+import GlobalData from './globalData';
 
 export default interface AllData
 {

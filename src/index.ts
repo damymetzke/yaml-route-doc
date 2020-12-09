@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as yaml from 'yaml';
 import * as sass from 'sass';
 import ConfigData from './config/configData';
-import { RouteData } from './data/routeData';
+import RouteData from './data/routeData';
 import HtmlWriter from './writer/htmlWriter';
 import parseInput from './parser/parseInput';
 

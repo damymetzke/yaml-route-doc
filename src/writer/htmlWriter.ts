@@ -2,7 +2,7 @@ import * as handlebars from 'handlebars';
 import * as path from 'path';
 import { promises as fs } from 'fs';
 import IWriter from './writer';
-import { RouteData } from '../data/routeData';
+import RouteData from '../data/routeData';
 import ConfigData from '../config/configData';
 
 async function registerPartials(partialsPath?: string): Promise<void> {
