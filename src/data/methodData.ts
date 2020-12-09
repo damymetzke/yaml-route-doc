@@ -7,6 +7,6 @@ export default interface MethodData
 
     requestType?: string;
     requestParameters?: ParameterData[];
-    responseType: string;
+    responseType?: string;
     responseParameters?: ParameterData[];
 }

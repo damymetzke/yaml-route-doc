@@ -70,5 +70,34 @@ export default async function parseInput(inputDirectory: string): Promise<Omit<A
   mergedResult.routes.sort(routeOrGroupSortFunction);
   mergedResult.groups.sort(routeOrGroupSortFunction);
 
+  mergedResult.routes.forEach((route) => {
+    route.method.forEach((method) => {
+      const result: any = {};
+      mergedResult.groups.forEach((group) => {
+        if (route.name < group.name) {
+          return;
+        }
+
+        if (route.name.slice(0, group.name.length) !== group.name) {
+          return;
+        }
+
+        Object.entries(group.variables).forEach(([key, value]) => {
+          if (value === undefined) {
+            return;
+          }
+          result[key] = value;
+        });
+      });
+
+      if (method.requestType === undefined) {
+        method.requestType = result.requestType;
+      }
+      if (method.responseType === undefined) {
+        method.responseType = result.responseType;
+      }
+    });
+  });
+
   return mergedResult;
 }
