@@ -2,7 +2,9 @@ import * as handlebars from 'handlebars';
 import * as path from 'path';
 import { promises as fs } from 'fs';
 import IWriter from './writer';
-import { AllData, GlobalData, RouteData } from '../data';
+import {
+  AllData, GlobalData, GroupData, RouteData,
+} from '../data';
 import ConfigData from '../config/configData';
 
 async function registerPartials(partialsPath?: string): Promise<void> {
@@ -24,6 +26,8 @@ export default class HtmlWriter implements IWriter {
   #indexTemplate?: handlebars.TemplateDelegate<any>;
 
   #routeTemplate?: handlebars.TemplateDelegate<any>;
+
+  #groupTemplate?: handlebars.TemplateDelegate<any>;
 
   async init(config: ConfigData): Promise<this> {
     await Promise.all([
@@ -54,8 +58,15 @@ export default class HtmlWriter implements IWriter {
       : '<!-- Problem when generating page -->'; // todo: return error page upon failure
   }
 
+  async writeGroup(data: any, global: any): Promise<string> {
+    return this.#groupTemplate
+      ? this.#groupTemplate({ ...data, global })
+      : '<!-- Problem when generating page -->'; // todo: return error page upon failure
+  }
+
   private async compileTemplates(templatesPath: string): Promise<void> {
     this.#indexTemplate = handlebars.compile((await fs.readFile(path.join(templatesPath, 'index.handlebars'))).toString());
     this.#routeTemplate = handlebars.compile((await fs.readFile(path.join(templatesPath, 'route.handlebars'))).toString());
+    this.#groupTemplate = handlebars.compile((await fs.readFile(path.join(templatesPath, 'group.handlebars'))).toString());
   }
 }

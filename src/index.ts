@@ -19,12 +19,21 @@ export async function document(configPath: string) {
     },
   };
   await fs.mkdir(path.join(config.outputDir, 'routes'), { recursive: true });
+  await fs.mkdir(path.join(config.outputDir, 'groups'));
   await Promise.all(data.routes.map(async (route) => {
     const writtenRoute = await writer.writeRoute(route, {
       ...data.global,
       style: '../style.css',
     });
     await fs.writeFile(`${path.join(config.outputDir, 'routes', route.name.replace(/\//g, '_')).replace(/{/g, '_').replace(/}/g, '')}.html`, writtenRoute);
+  }));
+
+  await Promise.all(data.groups.map(async (group) => {
+    const writtenGroup = await writer.writeGroup(group, {
+      ...data.global,
+      style: '../style.css',
+    });
+    await fs.writeFile(`${path.join(config.outputDir, 'groups', group.name.replace(/\//g, '_')).replace(/{/g, '_').replace(/}/g, '')}.html`, writtenGroup);
   }));
 
   const writtenIndex = await writer.writeIndex(data);
