@@ -1,5 +1,7 @@
+import { AllData, GlobalData, RouteData } from '../data';
+
 export default interface IWriter
 {
-    writeIndex(data: any): Promise<string>;
-    writeRoute(data: any): Promise<string>;
+    writeIndex(data: AllData): Promise<string>;
+    writeRoute(data: RouteData, global: GlobalData): Promise<string>;
 }

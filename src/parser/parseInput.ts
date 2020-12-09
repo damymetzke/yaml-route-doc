@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as yaml from 'yaml';
 import marked from 'marked';
 import {
-  MethodData, ParameterData, RouteData, GlobalData,
+  MethodData, ParameterData, RouteData, AllData,
 } from '../data';
 
 function parameterMapFunction(parameter: ParameterData): ParameterData {
@@ -13,7 +13,7 @@ function parameterMapFunction(parameter: ParameterData): ParameterData {
   };
 }
 
-export default async function parseInput(inputDirectory: string): Promise<RouteData[]> {
+export default async function parseInput(inputDirectory: string): Promise<Omit<AllData, 'global'>> {
   const files = await fs.readdir(inputDirectory);
   const results = await files.map(async (file) => {
     if ((await fs.stat(path.join(inputDirectory, file))).isDirectory()) {
@@ -24,9 +24,8 @@ export default async function parseInput(inputDirectory: string): Promise<RouteD
     const parsedData = yaml.parse(rawData.toString());
     // todo: validate parsed data
 
-    const result: (RouteData & {global: GlobalData})[] = (<RouteData[]>parsedData.routes)
+    const result: RouteData[] = (<RouteData[]>parsedData.routes)
       .map((route) => ({
-        global: { style: '' },
         name: route.name,
         method: route?.method.map((method): MethodData => ({
           ...method,
@@ -39,9 +38,11 @@ export default async function parseInput(inputDirectory: string): Promise<RouteD
             : undefined,
         })),
       }));
-    return result;
+    return { routes: result };
   });
 
   const finishedResults = await Promise.all(results);
-  return finishedResults.reduce((total, current) => [...total, ...current], []);
+  return finishedResults
+    .reduce((total, current) => ({ routes: [...total.routes, ...current.routes] }),
+      { routes: [] });
 }
