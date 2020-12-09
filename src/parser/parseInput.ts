@@ -2,9 +2,7 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 import * as yaml from 'yaml';
 import marked from 'marked';
-import RouteData from '../data/routeData';
-import ParameterData from '../data/parameterData';
-import MethodData from '../data/methodData';
+import { MethodData, ParameterData, RouteData } from '../data';
 
 function parameterMapFunction(parameter: ParameterData): ParameterData {
   return {
