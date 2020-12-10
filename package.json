@@ -20,7 +20,8 @@
     "fix-prettier": "prettier --write .",
     "test": "jest",
     "test-coverage": "jest --coverage",
-    "init-sandbox": "node ./lib/yamlRouteDoc.js -i --initRoot sandbox"
+    "init-sandbox": "node ./lib/yamlRouteDoc.js -i --initRoot sandbox",
+    "commit": "node ./buildScript/commit.js"
   },
   "author": "Damy Metzke",
   "license": "MIT",
