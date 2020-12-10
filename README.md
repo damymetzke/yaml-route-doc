@@ -33,9 +33,9 @@ To generate the HTML use the command:
 Alternatively call it programmatically:
 
 ```ts
-import * as documenter from 'yaml-route-doc';
+import * as documenter from "yaml-route-doc";
 
-documenter.document('path/to/config.yml');
+documenter.document("path/to/config.yml");
 ```
 
 ## Understanding the structure
@@ -44,21 +44,22 @@ By default all files related to route documentation are collected under a single
 However, all sub-folders are defined in the config file.
 You can freely rename the folders, or even move them elsewhere.
 Be default the following folders exists:
+
 - `/output`; The output when generating the HTML.
-`/output/index.html` is considered to be the entry point.
+  `/output/index.html` is considered to be the entry point.
 - `/routes`; The primary input when generating the HTML.
-This contains YAML formatted data for all routes.
+  This contains YAML formatted data for all routes.
 - `/styles`; Holds the css sheet.
-In the future sass might be supported here.
-The defined function, `/styles/style.css` by default, will be included in the generated output.
+  In the future sass might be supported here.
+  The defined function, `/styles/style.css` by default, will be included in the generated output.
 - `templates`; Holds the HTML templates used to generate the output.
-Templates use [Handlebars](https://handlebarsjs.com).
-The files **are** required to have specific names.
+  Templates use [Handlebars](https://handlebarsjs.com).
+  The files **are** required to have specific names.
 - `templates/partials`;
-These will be registered as [handlebars partials](https://handlebarsjs.com/guide/#partials).
-Simply put these are reusable templates that can be included in other templates.
-The name you should use in other templates is the same as the name of the file.
-So to use the partial `myPartial.handlebars`, you write `{{>myPartial}}`.
+  These will be registered as [handlebars partials](https://handlebarsjs.com/guide/#partials).
+  Simply put these are reusable templates that can be included in other templates.
+  The name you should use in other templates is the same as the name of the file.
+  So to use the partial `myPartial.handlebars`, you write `{{>myPartial}}`.
 
 ### Editing the files
 
@@ -68,6 +69,6 @@ Here are some things you could do:
 
 - Change the color scheme to fit your project or company.
 - Add links to some other bigger index page in the route-doc index page.
-This way you could link different documentation generators.
+  This way you could link different documentation generators.
 - Add scripted functionality, such as dropdowns or a search bar.
 - Add some text to the index page.

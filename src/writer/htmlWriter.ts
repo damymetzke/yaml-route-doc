@@ -1,11 +1,9 @@
-import * as handlebars from 'handlebars';
-import * as path from 'path';
-import { promises as fs } from 'fs';
-import IWriter from './writer';
-import {
-  AllData, GlobalData, GroupData, RouteData,
-} from '../data';
-import ConfigData from '../config/configData';
+import * as handlebars from "handlebars";
+import * as path from "path";
+import { promises as fs } from "fs";
+import IWriter from "./writer";
+import { AllData, GlobalData, GroupData, RouteData } from "../data";
+import ConfigData from "../config/configData";
 
 async function registerPartials(partialsPath?: string): Promise<void> {
   if (!partialsPath) {
@@ -13,13 +11,17 @@ async function registerPartials(partialsPath?: string): Promise<void> {
   }
 
   const partialFiles = await fs.readdir(partialsPath);
-  await Promise.all(partialFiles.map(async (file) => {
-    const fileData = (await fs.readFile(path.join(partialsPath, file))).toString();
-    handlebars.registerPartial(
-      file.replace(/.handlebars$/, ''),
-      handlebars.compile(fileData),
-    );
-  }));
+  await Promise.all(
+    partialFiles.map(async (file) => {
+      const fileData = (
+        await fs.readFile(path.join(partialsPath, file))
+      ).toString();
+      handlebars.registerPartial(
+        file.replace(/.handlebars$/, ""),
+        handlebars.compile(fileData)
+      );
+    })
+  );
 }
 
 export default class HtmlWriter implements IWriter {
@@ -35,7 +37,14 @@ export default class HtmlWriter implements IWriter {
       this.compileTemplates(config.templates),
     ]);
 
-    handlebars.registerHelper('routeToFile', (routeName) => `${routeName.replace(/\//g, '_').replace(/{/g, '_').replace(/}/g, '')}.html`);
+    handlebars.registerHelper(
+      "routeToFile",
+      (routeName) =>
+        `${routeName
+          .replace(/\//g, "_")
+          .replace(/{/g, "_")
+          .replace(/}/g, "")}.html`
+    );
 
     return this;
   }
@@ -49,24 +58,36 @@ export default class HtmlWriter implements IWriter {
   async writeIndex(data: AllData): Promise<string> {
     return this.#indexTemplate
       ? this.#indexTemplate(data)
-      : '<!-- Problem when generating page -->'; // todo: return error page upon failure
+      : "<!-- Problem when generating page -->"; // todo: return error page upon failure
   }
 
   async writeRoute(data: RouteData, global: GlobalData): Promise<string> {
     return this.#routeTemplate
       ? this.#routeTemplate({ ...data, global })
-      : '<!-- Problem when generating page -->'; // todo: return error page upon failure
+      : "<!-- Problem when generating page -->"; // todo: return error page upon failure
   }
 
   async writeGroup(data: any, global: any): Promise<string> {
     return this.#groupTemplate
       ? this.#groupTemplate({ ...data, global })
-      : '<!-- Problem when generating page -->'; // todo: return error page upon failure
+      : "<!-- Problem when generating page -->"; // todo: return error page upon failure
   }
 
   private async compileTemplates(templatesPath: string): Promise<void> {
-    this.#indexTemplate = handlebars.compile((await fs.readFile(path.join(templatesPath, 'index.handlebars'))).toString());
-    this.#routeTemplate = handlebars.compile((await fs.readFile(path.join(templatesPath, 'route.handlebars'))).toString());
-    this.#groupTemplate = handlebars.compile((await fs.readFile(path.join(templatesPath, 'group.handlebars'))).toString());
+    this.#indexTemplate = handlebars.compile(
+      (
+        await fs.readFile(path.join(templatesPath, "index.handlebars"))
+      ).toString()
+    );
+    this.#routeTemplate = handlebars.compile(
+      (
+        await fs.readFile(path.join(templatesPath, "route.handlebars"))
+      ).toString()
+    );
+    this.#groupTemplate = handlebars.compile(
+      (
+        await fs.readFile(path.join(templatesPath, "group.handlebars"))
+      ).toString()
+    );
   }
 }

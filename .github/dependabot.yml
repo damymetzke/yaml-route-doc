@@ -4,7 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-      time: '08:00'
+      time: "08:00"
       timezone: Europe/Amsterdam
     open-pull-requests-limit: 99
     # Tell Dependabot to increase the version in package.json and package-lock,
@@ -16,5 +16,5 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-      time: '08:00'
+      time: "08:00"
       timezone: Europe/Amsterdam

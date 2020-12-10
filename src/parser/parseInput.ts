@@ -1,10 +1,14 @@
-import { promises as fs } from 'fs';
-import * as path from 'path';
-import * as yaml from 'yaml';
-import marked from 'marked';
+import { promises as fs } from "fs";
+import * as path from "path";
+import * as yaml from "yaml";
+import marked from "marked";
 import {
-  MethodData, ParameterData, RouteData, AllData, GroupData,
-} from '../data';
+  MethodData,
+  ParameterData,
+  RouteData,
+  AllData,
+  GroupData,
+} from "../data";
 
 function parameterMapFunction(parameter: ParameterData): ParameterData {
   return {
@@ -13,59 +17,67 @@ function parameterMapFunction(parameter: ParameterData): ParameterData {
   };
 }
 
-function routeOrGroupSortFunction(a: RouteData | GroupData, b: RouteData | GroupData): number {
-  const nameA = a.name.split('/');
-  const nameB = b.name.split('/');
+function routeOrGroupSortFunction(
+  a: RouteData | GroupData,
+  b: RouteData | GroupData
+): number {
+  const nameA = a.name.split("/");
+  const nameB = b.name.split("/");
 
   for (let i = 0; i < Math.min(nameA.length, nameB.length); ++i) {
     if (nameA[i] === nameB[i]) {
       continue;
     }
 
-    return nameA[i] < nameB[i]
-      ? -1
-      : 1;
+    return nameA[i] < nameB[i] ? -1 : 1;
   }
 
   return nameA.length - nameB.length;
 }
 
-export default async function parseInput(inputDirectory: string): Promise<Omit<AllData, 'global'>> {
+export default async function parseInput(
+  inputDirectory: string
+): Promise<Omit<AllData, "global">> {
   const files = await fs.readdir(inputDirectory);
-  const results: Partial<Omit<AllData, 'global'>>[] = await Promise.all(files.map(async (file) => {
-    if ((await fs.stat(path.join(inputDirectory, file))).isDirectory()) {
-      return parseInput(path.join(inputDirectory, file));
-    }
+  const results: Partial<Omit<AllData, "global">>[] = await Promise.all(
+    files.map(async (file) => {
+      if ((await fs.stat(path.join(inputDirectory, file))).isDirectory()) {
+        return parseInput(path.join(inputDirectory, file));
+      }
 
-    const rawData = await fs.readFile(path.join(inputDirectory, file));
-    const parsedData = yaml.parse(rawData.toString());
-    // todo: validate parsed data
+      const rawData = await fs.readFile(path.join(inputDirectory, file));
+      const parsedData = yaml.parse(rawData.toString());
+      // todo: validate parsed data
 
-    return {
-      routes: (<RouteData[]>parsedData.routes)?.map((route) => ({
-        name: route.name,
-        method: route?.method.map((method): MethodData => ({
-          ...method,
-          description: marked(method.description),
-          requestParameters: method.requestParameters
-            ? method.requestParameters.map(parameterMapFunction)
-            : undefined,
-          responseParameters: method.responseParameters
-            ? method.responseParameters.map(parameterMapFunction)
-            : undefined,
+      return {
+        routes: (<RouteData[]>parsedData.routes)?.map((route) => ({
+          name: route.name,
+          method: route?.method.map(
+            (method): MethodData => ({
+              ...method,
+              description: marked(method.description),
+              requestParameters: method.requestParameters
+                ? method.requestParameters.map(parameterMapFunction)
+                : undefined,
+              responseParameters: method.responseParameters
+                ? method.responseParameters.map(parameterMapFunction)
+                : undefined,
+            })
+          ),
         })),
-      })),
-      groups: <GroupData[]>parsedData.groups,
-    };
-  }));
+        groups: <GroupData[]>parsedData.groups,
+      };
+    })
+  );
 
   const finishedResults = await Promise.all(results);
-  const mergedResult = finishedResults
-    .reduce((total: Omit<AllData, 'global'>, current) => ({
+  const mergedResult = finishedResults.reduce(
+    (total: Omit<AllData, "global">, current) => ({
       routes: [...total.routes, ...(current.routes ? current.routes : [])],
       groups: [...total.groups, ...(current.groups ? current.groups : [])],
     }),
-    { routes: [], groups: [] });
+    { routes: [], groups: [] }
+  );
 
   mergedResult.routes.sort(routeOrGroupSortFunction);
   mergedResult.groups.sort(routeOrGroupSortFunction);
