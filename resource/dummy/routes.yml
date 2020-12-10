@@ -20,4 +20,3 @@ routes:
       - verb: POST
         description: Diferent methods are separate, but share the *same* pag.
         responseType: application/json
-  

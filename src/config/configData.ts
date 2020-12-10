@@ -1,46 +1,46 @@
-import { promises as fs } from 'fs';
-import * as yaml from 'yaml';
-import * as path from 'path';
+import { promises as fs } from "fs";
+import * as yaml from "yaml";
+import * as path from "path";
 
 export default class ConfigData {
-    routesDir: string = '';
+  routesDir: string = "";
 
-    outputDir: string = '';
+  outputDir: string = "";
 
-    style: string = '';
+  style: string = "";
 
-    templates: string = '';
+  templates: string = "";
 
-    partials?: string;
+  partials?: string;
 
-    async load(filePath: string): Promise<this> {
-      const fileData = await fs.readFile(filePath);
-      const rawData = yaml.parse(fileData.toString());
+  async load(filePath: string): Promise<this> {
+    const fileData = await fs.readFile(filePath);
+    const rawData = yaml.parse(fileData.toString());
 
-      if (!ConfigData.verify(rawData)) {
-        throw new Error('Invalid config file');
-      }
-
-      this.routesDir = path.join(path.dirname(filePath), rawData.routesDir);
-      this.outputDir = path.join(path.dirname(filePath), rawData.outputDir);
-      this.style = rawData.style
-        ? path.join(path.dirname(filePath), rawData.style)
-        : '';
-      this.templates = path.join(path.dirname(filePath), rawData.templates);
-      this.partials = path.join(path.dirname(filePath), rawData.partials);
-
-      return this;
+    if (!ConfigData.verify(rawData)) {
+      throw new Error("Invalid config file");
     }
 
-    static verify(data: object): boolean {
-      if (!('routesDir' in data)) {
-        return false; // mandatory
-      }
+    this.routesDir = path.join(path.dirname(filePath), rawData.routesDir);
+    this.outputDir = path.join(path.dirname(filePath), rawData.outputDir);
+    this.style = rawData.style
+      ? path.join(path.dirname(filePath), rawData.style)
+      : "";
+    this.templates = path.join(path.dirname(filePath), rawData.templates);
+    this.partials = path.join(path.dirname(filePath), rawData.partials);
 
-      if (!('outputDir' in data)) {
-        return false; // mandatory
-      }
+    return this;
+  }
 
-      return true;
+  static verify(data: object): boolean {
+    if (!("routesDir" in data)) {
+      return false; // mandatory
     }
+
+    if (!("outputDir" in data)) {
+      return false; // mandatory
+    }
+
+    return true;
+  }
 }

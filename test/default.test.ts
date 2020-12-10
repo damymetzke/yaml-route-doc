@@ -1,3 +1,3 @@
-test('Default Test', () => {
+test("Default Test", () => {
   expect(true).toStrictEqual(true);
 });

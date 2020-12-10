@@ -1,7 +1,7 @@
-import MethodData from './methodData';
+import MethodData from "./methodData";
 
-export default interface GroupData{
-    name: string;
-    description: string;
-    variables: Pick<MethodData, 'requestType' | 'responseType'>
+export default interface GroupData {
+  name: string;
+  description: string;
+  variables: Pick<MethodData, "requestType" | "responseType">;
 }

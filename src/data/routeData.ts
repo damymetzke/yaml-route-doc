@@ -1,7 +1,6 @@
-import MethodData from './methodData';
+import MethodData from "./methodData";
 
-export default interface RouteData
-{
-    name: string;
-    method: MethodData[];
+export default interface RouteData {
+  name: string;
+  method: MethodData[];
 }
