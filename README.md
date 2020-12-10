@@ -1,7 +1,8 @@
 # YAML Route Documenter
 
-[![ESLint](https://github.com/damymetzke/yaml-route-doc/workflows/ESLint/badge.svg?branch=master)](https://github.com/damymetzke/yaml-route-doc/actions?query=workflow%3AESLint)
 [![Build and Run Tests](https://github.com/damymetzke/yaml-route-doc/workflows/Build%20and%20Run%20Tests/badge.svg?branch=master)](https://github.com/damymetzke/yaml-route-doc/actions?query=workflow%3A%22Build+and+Run+Tests%22)
+[![ESLint](https://github.com/damymetzke/yaml-route-doc/workflows/ESLint/badge.svg?branch=master)](https://github.com/damymetzke/yaml-route-doc/actions?query=workflow%3AESLint)
+[![Prettier](https://github.com/damymetzke/yaml-route-doc/workflows/Prettier/badge.svg?branch=master)](https://github.com/damymetzke/yaml-route-doc/actions?query=workflow%3APrettier)
 
 The main purpose of this package is:
 
