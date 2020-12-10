@@ -108,6 +108,12 @@ export default async function parseInput(
       if (method.responseType === undefined) {
         method.responseType = result.responseType;
       }
+      if (method.auth === undefined) {
+        method.auth = result.auth;
+      }
+      if (method.role === undefined) {
+        method.role = result.role;
+      }
     });
   });
 
