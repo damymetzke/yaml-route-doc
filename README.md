@@ -44,7 +44,7 @@ documenter.document("path/to/config.yml");
 By default all files related to route documentation are collected under a single 'root' folder.
 However, all sub-folders are defined in the config file.
 You can freely rename the folders, or even move them elsewhere.
-Be default the following folders exists:
+By default the following folders exists:
 
 - `/output`; The output when generating the HTML.
   `/output/index.html` is considered to be the entry point.
