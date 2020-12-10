@@ -17,4 +17,7 @@ export default interface MethodData {
   requestParameters?: ParameterData[];
   responseType?: string;
   responseParameters?: ParameterData[];
+
+  auth?: string;
+  role?: string;
 }
