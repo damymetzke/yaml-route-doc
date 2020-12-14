@@ -1,36 +1,51 @@
 import Validator from "../../src/validate/validator";
-import ValidateResult from "../../src/validate/validateResult";
 
-test("Validator will return true with valid data", () => {
+test("Validator will return succesful result with valid data.", () => {
   const validator = new Validator();
 
-  expect(validator.validate({ a: "Hello World!" })).toStrictEqual({
+  expect(validator.validate({})).toStrictEqual({
     success: true,
-    data: { a: "Hello World!" },
+    data: {},
+    extra: [],
   });
 });
 
-test("Validator will return false with non-object and null input", () => {
+test("Validator will return failed result with non-object or null as input.", () => {
   const validator = new Validator();
 
   expect(validator.validate(null)).toStrictEqual({
     success: false,
     data: null,
+    extra: [],
   });
   expect(validator.validate(42)).toStrictEqual({
     success: false,
     data: null,
+    extra: [],
   });
   expect(validator.validate(false)).toStrictEqual({
     success: false,
     data: null,
+    extra: [],
   });
   expect(validator.validate("Hello World!")).toStrictEqual({
     success: false,
     data: null,
+    extra: [],
   });
   expect(validator.validate(() => {})).toStrictEqual({
     success: false,
     data: null,
+    extra: [],
+  });
+});
+
+test("Validator will return failed result when too much input data is provided.", () => {
+  const validator = new Validator();
+
+  expect(validator.validate({ not: "required" })).toStrictEqual({
+    success: false,
+    data: {},
+    extra: ["not"],
   });
 });
