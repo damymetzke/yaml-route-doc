@@ -1,13 +1,21 @@
+import ValidateResult from "./validateResult";
+
 export default class Validator {
-  validate(data: unknown): boolean {
+  validate(data: unknown): ValidateResult {
     if (typeof data !== "object" || data === null) {
-      return false;
+      return {
+        success: false,
+        data: null,
+      };
     }
 
     Object.entries(data).forEach(([key, value]) => {
       console.log(`${key} => ${value}`);
     });
 
-    return true;
+    return {
+      success: true,
+      data,
+    };
   }
 }
