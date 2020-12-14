@@ -11,7 +11,11 @@ function generateInput(
 
 function generateValidator(): Validator {
   const result = new Validator();
-  result.registerRule({ key: "name", required: true });
+  result.registerRule({
+    key: "name",
+    required: true,
+    test: (data) => typeof data === "string",
+  });
   return result;
 }
 
@@ -22,6 +26,7 @@ test("Validator will return succesful result with valid data.", () => {
     success: true,
     data: generateInput(),
     extra: [],
+    failed: [],
   });
 });
 
@@ -32,26 +37,31 @@ test("Validator will return failed result with non-object or null as input.", ()
     success: false,
     data: null,
     extra: [],
+    failed: [],
   });
   expect(validator.validate(42)).toStrictEqual({
     success: false,
     data: null,
     extra: [],
+    failed: [],
   });
   expect(validator.validate(false)).toStrictEqual({
     success: false,
     data: null,
     extra: [],
+    failed: [],
   });
   expect(validator.validate("Hello World!")).toStrictEqual({
     success: false,
     data: null,
     extra: [],
+    failed: [],
   });
   expect(validator.validate(() => {})).toStrictEqual({
     success: false,
     data: null,
     extra: [],
+    failed: [],
   });
 });
 
@@ -62,5 +72,17 @@ test("Validator will return failed result when too much input data is provided."
     success: false,
     data: generateInput(),
     extra: ["not"],
+    failed: [],
+  });
+});
+
+test("Validator returns failed result when rule test fails.", () => {
+  const validator = generateValidator();
+
+  expect(validator.validate(generateInput({ name: 42 }))).toStrictEqual({
+    success: false,
+    data: {},
+    extra: [],
+    failed: ["name"],
   });
 });

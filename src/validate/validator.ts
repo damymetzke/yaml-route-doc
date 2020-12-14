@@ -10,6 +10,7 @@ export default class Validator {
         success: false,
         data: null,
         extra: [],
+        failed: [],
       };
     }
 
@@ -17,12 +18,19 @@ export default class Validator {
       success: true,
       data: {},
       extra: [],
+      failed: [],
     };
 
     Object.entries(data).forEach(([key, value]) => {
       if (!(key in this.#rules)) {
         result.success = false;
         result.extra.push(key);
+        return;
+      }
+
+      if (!this.#rules[key].test(value)) {
+        result.success = false;
+        result.failed.push(key);
         return;
       }
 
