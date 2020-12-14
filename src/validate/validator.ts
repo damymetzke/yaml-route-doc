@@ -9,17 +9,27 @@ export default class Validator {
       return {
         success: false,
         data: null,
+        extra: [],
       };
     }
 
+    const result: ValidateResult = {
+      success: true,
+      data: {},
+      extra: [],
+    };
+
     Object.entries(data).forEach(([key, value]) => {
-      console.log(`${key} => ${value}`);
+      if (!(key in this.#rules)) {
+        result.success = false;
+        result.extra.push(key);
+        return;
+      }
+
+      result.data[key] = value;
     });
 
-    return {
-      success: true,
-      data,
-    };
+    return result;
   }
 
   registerRule(rule: ValidateRule) {
