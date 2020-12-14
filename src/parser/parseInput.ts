@@ -9,6 +9,7 @@ import {
   AllData,
   GroupData,
 } from "../data";
+import Validator from "../validate/validator";
 
 function parameterMapFunction(parameter: ParameterData): ParameterData {
   return {
@@ -47,7 +48,6 @@ export default async function parseInput(
 
       const rawData = await fs.readFile(path.join(inputDirectory, file));
       const parsedData = yaml.parse(rawData.toString());
-      // todo: validate parsed data
 
       return {
         routes: (<RouteData[]>parsedData.routes)?.map((route) => ({

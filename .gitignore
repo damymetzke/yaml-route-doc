@@ -5,4 +5,4 @@ lib
 sandbox
 
 # coverage reports
-test/coverage
+coverage
