@@ -27,6 +27,7 @@ test("Validator will return succesful result with valid data.", () => {
     data: generateInput(),
     extra: [],
     failed: [],
+    missing: [],
   });
 });
 
@@ -38,30 +39,35 @@ test("Validator will return failed result with non-object or null as input.", ()
     data: null,
     extra: [],
     failed: [],
+    missing: [],
   });
   expect(validator.validate(42)).toStrictEqual({
     success: false,
     data: null,
     extra: [],
     failed: [],
+    missing: [],
   });
   expect(validator.validate(false)).toStrictEqual({
     success: false,
     data: null,
     extra: [],
     failed: [],
+    missing: [],
   });
   expect(validator.validate("Hello World!")).toStrictEqual({
     success: false,
     data: null,
     extra: [],
     failed: [],
+    missing: [],
   });
   expect(validator.validate(() => {})).toStrictEqual({
     success: false,
     data: null,
     extra: [],
     failed: [],
+    missing: [],
   });
 });
 
@@ -73,6 +79,7 @@ test("Validator will return failed result when too much input data is provided."
     data: generateInput(),
     extra: ["not"],
     failed: [],
+    missing: [],
   });
 });
 
@@ -84,5 +91,18 @@ test("Validator returns failed result when rule test fails.", () => {
     data: {},
     extra: [],
     failed: ["name"],
+    missing: [],
+  });
+});
+
+test("Validator returns failed result when required data is missing.", () => {
+  const validator = generateValidator();
+
+  expect(validator.validate({})).toStrictEqual({
+    success: false,
+    data: {},
+    extra: [],
+    failed: [],
+    missing: ["name"],
   });
 });
