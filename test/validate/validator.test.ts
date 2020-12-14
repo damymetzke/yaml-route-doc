@@ -1,17 +1,32 @@
 import Validator from "../../src/validate/validator";
 
-test("Validator will return succesful result with valid data.", () => {
-  const validator = new Validator();
+function generateInput(
+  extra: { [key: string]: unknown } = {}
+): { [key: string]: unknown } {
+  return {
+    name: "name",
+    ...extra,
+  };
+}
 
-  expect(validator.validate({})).toStrictEqual({
+function generateValidator(): Validator {
+  const result = new Validator();
+  result.registerRule({ key: "name", required: true });
+  return result;
+}
+
+test("Validator will return succesful result with valid data.", () => {
+  const validator = generateValidator();
+
+  expect(validator.validate(generateInput())).toStrictEqual({
     success: true,
-    data: {},
+    data: generateInput(),
     extra: [],
   });
 });
 
 test("Validator will return failed result with non-object or null as input.", () => {
-  const validator = new Validator();
+  const validator = generateValidator();
 
   expect(validator.validate(null)).toStrictEqual({
     success: false,
@@ -41,11 +56,11 @@ test("Validator will return failed result with non-object or null as input.", ()
 });
 
 test("Validator will return failed result when too much input data is provided.", () => {
-  const validator = new Validator();
+  const validator = generateValidator();
 
-  expect(validator.validate({ not: "required" })).toStrictEqual({
+  expect(validator.validate(generateInput({ not: "required" }))).toStrictEqual({
     success: false,
-    data: {},
+    data: generateInput(),
     extra: ["not"],
   });
 });
