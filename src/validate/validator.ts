@@ -42,7 +42,8 @@ export default class Validator {
         required.delete(key);
       }
 
-      if (!this.#rules[key].test(value)) {
+      const testResult = this.#rules[key].test(value);
+      if (typeof testResult === "string") {
         result.success = false;
         result.failed.push(key);
         return;
