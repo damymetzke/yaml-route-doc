@@ -4,4 +4,5 @@ export default interface ValidateResult {
   extra: string[];
   failed: string[];
   missing: string[];
+  messages: { key: string; problem: string }[];
 }

@@ -22,7 +22,17 @@ export async function document(configPath: string) {
 
   const validator = generateRouteValidator();
 
-  if (data.routes.some((route) => !validator.validate(route).success)) {
+  if (
+    data.routes.some((route) => {
+      const result = validator.validate(route);
+
+      result.messages.forEach((message) => {
+        console.warn(`[${message.key}] => ${message.problem}`);
+      });
+
+      return !result.success;
+    })
+  ) {
     console.log("invalid data!");
   }
   await fs.mkdir(path.join(config.outputDir, "routes"), { recursive: true });
