@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import * as sass from "sass";
+import generateRouteValidator from "./validate/routeValidator";
 import ConfigData from "./config/configData";
 import HtmlWriter from "./writer/htmlWriter";
 import parseInput from "./parser/parseInput";
@@ -18,6 +19,12 @@ export async function document(configPath: string) {
       style: "style.css",
     },
   };
+
+  const validator = generateRouteValidator();
+
+  if (data.routes.some((route) => !validator.validate(route).success)) {
+    console.log("invalid data!");
+  }
   await fs.mkdir(path.join(config.outputDir, "routes"), { recursive: true });
   await fs.mkdir(path.join(config.outputDir, "groups"), { recursive: true });
   await Promise.all(
