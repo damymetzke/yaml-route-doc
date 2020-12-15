@@ -28,6 +28,10 @@ export default class Validator {
     };
 
     Object.entries(data).forEach(([key, value]) => {
+      // undefined is considered the same as not existing
+      if (value === undefined) {
+        return;
+      }
       if (!(key in this.#rules)) {
         result.success = false;
         result.extra.push(key);

@@ -9,7 +9,6 @@ import {
   AllData,
   GroupData,
 } from "../data";
-import Validator from "../validate/validator";
 
 function parameterMapFunction(parameter: ParameterData): ParameterData {
   return {

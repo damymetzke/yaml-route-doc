@@ -5,7 +5,7 @@ lib
 sandbox
 
 # coverage reports
-test/coverage
+coverage
 
 # ignore Handlebars templates as Prettier cannot parse this yet
 *.handlebars
