@@ -14,6 +14,13 @@ export default class Validator {
         extra: [],
         failed: [],
         missing: [],
+        messages: [
+          {
+            key: ".",
+            problem:
+              "Expected data to be validated to be of type object and not 'null'.",
+          },
+        ],
       };
     }
 
@@ -25,6 +32,7 @@ export default class Validator {
       extra: [],
       failed: [],
       missing: [],
+      messages: [],
     };
 
     Object.entries(data).forEach(([key, value]) => {
@@ -35,6 +43,10 @@ export default class Validator {
       if (!(key in this.#rules)) {
         result.success = false;
         result.extra.push(key);
+        result.messages.push({
+          key,
+          problem: "key is not recognized by validator",
+        });
         return;
       }
 
@@ -46,6 +58,10 @@ export default class Validator {
       if (typeof testResult === "string") {
         result.success = false;
         result.failed.push(key);
+        result.messages.push({
+          key,
+          problem: testResult,
+        });
         return;
       }
 
@@ -55,6 +71,10 @@ export default class Validator {
     if (required.size > 0) {
       result.success = false;
       result.missing = [...required];
+      result.messages = [...required].map((key) => ({
+        key,
+        problem: "key is required",
+      }));
     }
 
     return result;
