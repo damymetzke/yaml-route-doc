@@ -14,7 +14,8 @@ function generateValidator(): Validator {
   result.registerRule({
     key: "name",
     required: true,
-    test: (data) => typeof data === "string",
+    test: (data) =>
+      typeof data !== "string" ? "Type is not string" : undefined,
   });
   return result;
 }

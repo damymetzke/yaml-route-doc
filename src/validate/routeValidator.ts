@@ -1,30 +1,52 @@
 import Validator from "./validator";
 
+function testType(
+  type:
+    | "bigint"
+    | "boolean"
+    | "function"
+    | "number"
+    | "object"
+    | "string"
+    | "symbol"
+    | "undefined"
+): (data: any) => undefined | string {
+  return (data): undefined | string => {
+    // type has already been limited in function signature.
+    // eslint-disable-next-line valid-typeof
+    if (typeof data !== type) {
+      return `expected type '${type}', recieved type '${typeof data}'.`;
+    }
+
+    return undefined;
+  };
+}
+
 function generateParameterValidator(): Validator {
   const result = new Validator();
 
   result.registerRule({
     key: "key",
     required: true,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "description",
     required: true,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "type",
     required: true,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "restrictions",
     required: false,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   return result;
@@ -38,37 +60,37 @@ function generateMethodValidator(): Validator {
   result.registerRule({
     key: "verb",
     required: true,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "description",
     required: true,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "auth",
     required: false,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "role",
     required: false,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "responseType",
     required: true,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "requestType",
     required: false,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   result.registerRule({
@@ -76,12 +98,18 @@ function generateMethodValidator(): Validator {
     required: false,
     test: (data) => {
       if (!Array.isArray(data)) {
-        return false;
+        return "not an array";
       }
 
-      return data.every(
-        (parameter) => parameterValidator.validate(parameter).success
-      );
+      if (
+        !data.every(
+          (parameter) => parameterValidator.validate(parameter).success
+        )
+      ) {
+        return "validation failed for one or more response parameters";
+      }
+
+      return undefined;
     },
   });
 
@@ -90,12 +118,18 @@ function generateMethodValidator(): Validator {
     required: false,
     test: (data) => {
       if (!Array.isArray(data)) {
-        return false;
+        return "expected an array, recieved something else";
       }
 
-      return data.every(
-        (parameter) => parameterValidator.validate(parameter).success
-      );
+      if (
+        !data.every(
+          (parameter) => parameterValidator.validate(parameter).success
+        )
+      ) {
+        return "validation failed for one or more request parameters";
+      }
+
+      return undefined;
     },
   });
 
@@ -110,7 +144,7 @@ export default function generateRouteValidator(): Validator {
   result.registerRule({
     key: "name",
     required: true,
-    test: (data) => typeof data === "string",
+    test: testType("string"),
   });
 
   result.registerRule({
@@ -118,10 +152,14 @@ export default function generateRouteValidator(): Validator {
     required: true,
     test: (data) => {
       if (!Array.isArray(data) || data.length === 0) {
-        return false;
+        return "expected an array, recieved something else";
       }
 
-      return data.every((method) => methodValidator.validate(method).success);
+      if (!data.every((method) => methodValidator.validate(method).success)) {
+        return "validation failed for one or more methods";
+      }
+
+      return undefined;
     },
   });
 
