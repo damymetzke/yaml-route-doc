@@ -13,7 +13,7 @@ export async function document(configPath: string) {
   await config.load(configPath);
   const writer = await HtmlWriter.create(config);
 
-  const data: AllData = {
+  const data: AllData = <AllData>{
     ...(await parseInput(config.routesDir)),
     global: {
       classPrefix: "routedoc--",
