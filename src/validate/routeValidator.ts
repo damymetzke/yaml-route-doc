@@ -1,5 +1,10 @@
 import ValidateResult from "./validateResult";
 import Validator from "./validator";
+import {
+  mergeValidateResult,
+  addKeyPrefixToValidateResult,
+  defaultValidateResult,
+} from "../util/validateResult";
 
 function testType(
   type:
@@ -162,28 +167,12 @@ export default function generateRouteValidator(): Validator {
           index,
         ])
         .reduce(
-          (total: ValidateResult, [current, index]) => ({
-            success: total.success && current.success,
-            data: {},
-            extra: [...total.extra, ...current.extra],
-            failed: [...total.failed, ...current.failed],
-            missing: [...total.missing, ...current.missing],
-            messages: [
-              ...total.messages,
-              ...current.messages.map(({ key, problem }) => ({
-                key: `[${index}].${key}`,
-                problem,
-              })),
-            ],
-          }),
-          {
-            success: true,
-            data: {},
-            extra: [],
-            failed: [],
-            missing: [],
-            messages: [],
-          }
+          (total: ValidateResult, [current, index]) =>
+            mergeValidateResult(
+              total,
+              addKeyPrefixToValidateResult(current, `[${index}].`)
+            ),
+          defaultValidateResult()
         );
 
       if (!validateResult.success) {
