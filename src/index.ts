@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import * as sass from "sass";
 import generateRouteValidator from "./validate/routeValidator";
+import generateGroupValidator from "./validate/groupValidator";
 import ConfigData from "./config/configData";
 import HtmlWriter from "./writer/htmlWriter";
 import parseInput from "./parser/parseInput";
@@ -20,11 +21,21 @@ export async function document(configPath: string) {
     },
   };
 
-  const validator = generateRouteValidator();
+  const routeValidator = generateRouteValidator();
+  const groupValidator = generateGroupValidator();
 
   if (
     data.routes.some((route) => {
-      const result = validator.validate(route);
+      const result = routeValidator.validate(route);
+
+      result.messages.forEach((message) => {
+        console.warn(`[${message.key}] => ${message.problem}`);
+      });
+
+      return !result.success;
+    }) ||
+    data.groups.some((group) => {
+      const result = groupValidator.validate(group);
 
       result.messages.forEach((message) => {
         console.warn(`[${message.key}] => ${message.problem}`);
