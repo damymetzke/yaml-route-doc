@@ -49,7 +49,7 @@
     "@types/sass": "^1.16.0",
     "argparse": "^2.0.1",
     "handlebars": "^4.7.6",
-    "marked": "^1.2.6",
+    "marked": "^1.2.7",
     "prompts": "^2.4.0",
     "sass": "^1.30.0",
     "yaml": "^1.10.0"
