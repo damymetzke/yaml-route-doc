@@ -23,7 +23,7 @@ export function mergeValidateResult(
 ): ValidateResult {
   return {
     success: a.success && b.success,
-    data: {},
+    data: { ...a.data, ...b.data },
     extra: [...a.extra, ...b.extra],
     failed: [...a.failed, ...b.failed],
     missing: [...a.missing, ...b.missing],

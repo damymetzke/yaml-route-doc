@@ -1,3 +1,7 @@
+import {
+  addKeyPrefixToValidateResult,
+  mergeValidateResult,
+} from "../util/validateResult";
 import ValidateResult from "./validateResult";
 import ValidateRule from "./validateRule";
 
@@ -26,7 +30,7 @@ export default class Validator {
 
     const required = new Set(this.#required);
 
-    const result: ValidateResult = {
+    let result: ValidateResult = {
       success: true,
       data: {},
       extra: [],
@@ -56,17 +60,13 @@ export default class Validator {
 
       const testResult = this.#rules[key].test(value);
       if (typeof testResult === "object") {
-        if (!testResult.success) {
-          result.success = false;
-          result.messages = [
-            ...result.messages,
-            ...testResult.messages.map((message) => ({
-              key: `${key}.${message.key}`,
-              problem: message.problem,
-            })),
-          ];
-        }
-      } else if (typeof testResult === "string") {
+        result = mergeValidateResult(
+          result,
+          addKeyPrefixToValidateResult(testResult, `${key}.`)
+        );
+        return;
+      }
+      if (typeof testResult === "string") {
         result.success = false;
         result.failed.push(key);
         result.messages.push({
@@ -76,7 +76,11 @@ export default class Validator {
         return;
       }
 
-      result.data[key] = value;
+      result.success = false;
+      result.messages.push({
+        key: "*",
+        problem: "internal error, please get your programmer",
+      });
     });
 
     if (required.size > 0) {
