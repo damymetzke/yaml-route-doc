@@ -29,6 +29,7 @@ test("Validator will return succesful result with valid data.", () => {
     extra: [],
     failed: [],
     missing: [],
+    messages: [],
   });
 });
 
@@ -41,6 +42,13 @@ test("Validator will return failed result with non-object or null as input.", ()
     extra: [],
     failed: [],
     missing: [],
+    messages: [
+      {
+        key: ".",
+        problem:
+          "Expected data to be validated to be of type object and not 'null'.",
+      },
+    ],
   });
   expect(validator.validate(42)).toStrictEqual({
     success: false,
@@ -48,6 +56,13 @@ test("Validator will return failed result with non-object or null as input.", ()
     extra: [],
     failed: [],
     missing: [],
+    messages: [
+      {
+        key: ".",
+        problem:
+          "Expected data to be validated to be of type object and not 'null'.",
+      },
+    ],
   });
   expect(validator.validate(false)).toStrictEqual({
     success: false,
@@ -55,6 +70,13 @@ test("Validator will return failed result with non-object or null as input.", ()
     extra: [],
     failed: [],
     missing: [],
+    messages: [
+      {
+        key: ".",
+        problem:
+          "Expected data to be validated to be of type object and not 'null'.",
+      },
+    ],
   });
   expect(validator.validate("Hello World!")).toStrictEqual({
     success: false,
@@ -62,6 +84,13 @@ test("Validator will return failed result with non-object or null as input.", ()
     extra: [],
     failed: [],
     missing: [],
+    messages: [
+      {
+        key: ".",
+        problem:
+          "Expected data to be validated to be of type object and not 'null'.",
+      },
+    ],
   });
   expect(validator.validate(() => {})).toStrictEqual({
     success: false,
@@ -69,6 +98,13 @@ test("Validator will return failed result with non-object or null as input.", ()
     extra: [],
     failed: [],
     missing: [],
+    messages: [
+      {
+        key: ".",
+        problem:
+          "Expected data to be validated to be of type object and not 'null'.",
+      },
+    ],
   });
 });
 
@@ -81,6 +117,12 @@ test("Validator will return failed result when too much input data is provided."
     extra: ["not"],
     failed: [],
     missing: [],
+    messages: [
+      {
+        key: "not",
+        problem: "key is not recognized by validator",
+      },
+    ],
   });
 });
 
@@ -93,6 +135,12 @@ test("Validator returns failed result when rule test fails.", () => {
     extra: [],
     failed: ["name"],
     missing: [],
+    messages: [
+      {
+        key: "name",
+        problem: "Type is not string",
+      },
+    ],
   });
 });
 
@@ -105,5 +153,11 @@ test("Validator returns failed result when required data is missing.", () => {
     extra: [],
     failed: [],
     missing: ["name"],
+    messages: [
+      {
+        key: "name",
+        problem: "key is required",
+      },
+    ],
   });
 });
