@@ -1,3 +1,4 @@
+import ValidateResult from "./validateResult";
 import Validator from "./validator";
 
 function testType(
@@ -155,8 +156,38 @@ export default function generateRouteValidator(): Validator {
         return "expected an array, recieved something else";
       }
 
-      if (!data.every((method) => methodValidator.validate(method).success)) {
-        return "validation failed for one or more methods";
+      const validateResult: ValidateResult = data
+        .map((method, index): [ValidateResult, number] => [
+          methodValidator.validate(method),
+          index,
+        ])
+        .reduce(
+          (total: ValidateResult, [current, index]) => ({
+            success: total.success && current.success,
+            data: {},
+            extra: [...total.extra, ...current.extra],
+            failed: [...total.failed, ...current.failed],
+            missing: [...total.missing, ...current.missing],
+            messages: [
+              ...total.messages,
+              ...current.messages.map(({ key, problem }) => ({
+                key: `[${index}].${key}`,
+                problem,
+              })),
+            ],
+          }),
+          {
+            success: true,
+            data: {},
+            extra: [],
+            failed: [],
+            missing: [],
+            messages: [],
+          }
+        );
+
+      if (!validateResult.success) {
+        return validateResult;
       }
 
       return undefined;
