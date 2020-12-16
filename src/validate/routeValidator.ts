@@ -4,6 +4,7 @@ import {
   mergeValidateResult,
   addKeyPrefixToValidateResult,
   defaultValidateResult,
+  succesfulDataValidateResult,
 } from "../util/validateResult";
 
 function testType(
@@ -16,15 +17,17 @@ function testType(
     | "string"
     | "symbol"
     | "undefined"
-): (data: any) => undefined | string {
-  return (data): undefined | string => {
+): (data: any) => string | ValidateResult {
+  return (data): string | ValidateResult => {
     // type has already been limited in function signature.
     // eslint-disable-next-line valid-typeof
     if (typeof data !== type) {
       return `expected type '${type}', recieved type '${typeof data}'.`;
     }
 
-    return undefined;
+    return succesfulDataValidateResult({
+      "": data,
+    });
   };
 }
 
@@ -115,7 +118,9 @@ function generateMethodValidator(): Validator {
         return "validation failed for one or more response parameters";
       }
 
-      return undefined;
+      return succesfulDataValidateResult({
+        "": "problem here",
+      });
     },
   });
 
@@ -135,7 +140,9 @@ function generateMethodValidator(): Validator {
         return "validation failed for one or more request parameters";
       }
 
-      return undefined;
+      return succesfulDataValidateResult({
+        "": "problem here",
+      });
     },
   });
 
@@ -175,11 +182,7 @@ export default function generateRouteValidator(): Validator {
           defaultValidateResult()
         );
 
-      if (!validateResult.success) {
-        return validateResult;
-      }
-
-      return undefined;
+      return validateResult;
     },
   });
 
