@@ -41,3 +41,16 @@ export function defaultValidateResult(): ValidateResult {
     messages: [],
   };
 }
+
+export function succesfulDataValidateResult(data: {
+  [key: string]: any;
+}): ValidateResult {
+  return {
+    success: true,
+    data,
+    extra: [],
+    failed: [],
+    missing: [],
+    messages: [],
+  };
+}

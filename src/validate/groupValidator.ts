@@ -4,6 +4,7 @@ import {
   mergeValidateResult,
   addKeyPrefixToValidateResult,
   defaultValidateResult,
+  succesfulDataValidateResult,
 } from "../util/validateResult";
 
 // todo: combine duplicate code at routeValidator.
@@ -17,15 +18,17 @@ function testType(
     | "string"
     | "symbol"
     | "undefined"
-): (data: any) => undefined | string {
-  return (data): undefined | string => {
+): (data: any) => string | ValidateResult {
+  return (data): string | ValidateResult => {
     // type has already been limited in function signature.
     // eslint-disable-next-line valid-typeof
     if (typeof data !== type) {
       return `expected type '${type}', recieved type '${typeof data}'.`;
     }
 
-    return undefined;
+    return succesfulDataValidateResult({
+      "": data,
+    });
   };
 }
 
@@ -86,11 +89,7 @@ export default function generateGroupValidator(): Validator {
 
       const validateResult: ValidateResult = variableValidator.validate(data);
 
-      if (!validateResult.success) {
-        return validateResult;
-      }
-
-      return undefined;
+      return validateResult;
     },
   });
 
