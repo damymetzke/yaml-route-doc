@@ -55,7 +55,18 @@ export default class Validator {
       }
 
       const testResult = this.#rules[key].test(value);
-      if (typeof testResult === "string") {
+      if (typeof testResult === "object") {
+        if (!testResult.success) {
+          result.success = false;
+          result.messages = [
+            ...result.messages,
+            ...testResult.messages.map((message) => ({
+              key: `${key}.${message.key}`,
+              problem: message.problem,
+            })),
+          ];
+        }
+      } else if (typeof testResult === "string") {
         result.success = false;
         result.failed.push(key);
         result.messages.push({
