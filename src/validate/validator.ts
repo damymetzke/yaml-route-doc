@@ -1,5 +1,7 @@
 import {
   addKeyPrefixToValidateResult,
+  addToObject,
+  addArrayToObject,
   mergeValidateResult,
 } from "../util/validateResult";
 import ValidateResult from "./validateResult";
@@ -59,11 +61,12 @@ export default class Validator {
       }
 
       const testResult = this.#rules[key].test(value);
+      if (Array.isArray(testResult)) {
+        result = mergeValidateResult(result, addArrayToObject(testResult, key));
+        return;
+      }
       if (typeof testResult === "object") {
-        result = mergeValidateResult(
-          result,
-          addKeyPrefixToValidateResult(testResult, `${key}.`)
-        );
+        result = mergeValidateResult(result, addToObject(testResult, key));
         return;
       }
       if (typeof testResult === "string") {
