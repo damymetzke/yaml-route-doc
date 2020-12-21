@@ -41,7 +41,8 @@ export function addToObject(
 ): ValidateResult {
   return {
     success: a.success,
-    data: { [objectName]: a.data },
+    data:
+      "" in a.data ? { [objectName]: a.data[""] } : { [objectName]: a.data },
     extra: a.extra.map((key) => `${objectName}.${key}`),
     failed: a.failed.map((key) => `${objectName}.${key}`),
     missing: a.missing.map((key) => `${objectName}.${key}`),

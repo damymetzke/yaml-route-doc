@@ -17,8 +17,7 @@ function testType(
     | "object"
     | "string"
     | "symbol"
-    | "undefined",
-  key: string
+    | "undefined"
 ): (data: any) => string | ValidateResult {
   return (data): string | ValidateResult => {
     // type has already been limited in function signature.
@@ -28,7 +27,7 @@ function testType(
     }
 
     return succesfulDataValidateResult({
-      [key]: data,
+      "": data,
     });
   };
 }
@@ -39,25 +38,25 @@ function generateParameterValidator(): Validator {
   result.registerRule({
     key: "key",
     required: true,
-    test: testType("string", "key"),
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "description",
     required: true,
-    test: testType("string", "description"),
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "type",
     required: true,
-    test: testType("string", "type"),
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "restrictions",
     required: false,
-    test: testType("string", "restrictions"),
+    test: testType("string"),
   });
 
   return result;
@@ -71,37 +70,37 @@ function generateMethodValidator(): Validator {
   result.registerRule({
     key: "verb",
     required: true,
-    test: testType("string", "verb"),
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "description",
     required: true,
-    test: testType("string", "description"),
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "auth",
     required: false,
-    test: testType("string", "auth"),
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "role",
     required: false,
-    test: testType("string", "role"),
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "responseType",
     required: true,
-    test: testType("string", "responseType"),
+    test: testType("string"),
   });
 
   result.registerRule({
     key: "requestType",
     required: false,
-    test: testType("string", "requestType"),
+    test: testType("string"),
   });
 
   result.registerRule({
@@ -159,7 +158,7 @@ export default function generateRouteValidator(): Validator {
   result.registerRule({
     key: "name",
     required: true,
-    test: testType("string", "name"),
+    test: testType("string"),
   });
 
   result.registerRule({
@@ -170,21 +169,9 @@ export default function generateRouteValidator(): Validator {
         return "expected an array, recieved something else";
       }
 
-      const validateResult: ValidateResult = data
-        .map((method, index): [ValidateResult, number] => [
-          methodValidator.validate(method),
-          index,
-        ])
-        .reduce(
-          (total: ValidateResult, [current, index]) =>
-            mergeValidateResult(
-              total,
-              addKeyPrefixToValidateResult(current, `[${index}].`)
-            ),
-          defaultValidateResult()
-        );
-
-      return validateResult;
+      return data.map(
+        (method): ValidateResult => methodValidator.validate(method)
+      );
     },
   });
 
