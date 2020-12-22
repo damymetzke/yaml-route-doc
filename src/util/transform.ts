@@ -1,15 +1,15 @@
 import marked from "marked";
-import ValidateResult from "../validate/validateResult";
-import Validator from "../validate/validator";
-import { succesfulDataValidateResult } from "./validateResult";
+import TransformResult from "../transform/transformResult";
+import Transformer from "../transform/transformer";
+import { succesfulDataTransformResult } from "./transformResult";
 
-export function testMarkdown(): (data: any) => string | ValidateResult {
-  return (data: any): string | ValidateResult => {
+export function testMarkdown(): (data: any) => string | TransformResult {
+  return (data: any): string | TransformResult => {
     if (typeof data !== "string") {
       return `expected type 'string', recieved type '${typeof data}'.`;
     }
 
-    return succesfulDataValidateResult({
+    return succesfulDataTransformResult({
       "": marked(data),
     });
   };
@@ -17,8 +17,8 @@ export function testMarkdown(): (data: any) => string | ValidateResult {
 
 export function testList(
   test: RegExp = /[^]*/
-): (data: any) => string | ValidateResult {
-  return (data: any): string | ValidateResult => {
+): (data: any) => string | TransformResult {
+  return (data: any): string | TransformResult => {
     let result: string[] = [];
     if (Array.isArray(data)) {
       if (!data.every((value) => typeof value === "string")) {
@@ -35,7 +35,7 @@ export function testList(
       return `regular expression failed`;
     }
 
-    return succesfulDataValidateResult({
+    return succesfulDataTransformResult({
       "": result,
     });
   };
@@ -50,40 +50,40 @@ export function testType(
     | "string"
     | "symbol"
     | "undefined"
-): (data: any) => string | ValidateResult {
-  return (data): string | ValidateResult => {
+): (data: any) => string | TransformResult {
+  return (data): string | TransformResult => {
     // type has already been limited in function signature.
     // eslint-disable-next-line valid-typeof
     if (typeof data !== type) {
       return `expected type '${type}', recieved type '${typeof data}'.`;
     }
 
-    return succesfulDataValidateResult({
+    return succesfulDataTransformResult({
       "": data,
     });
   };
 }
 
-export function testChildrenWithValidator(
-  validator: Validator
-): (data: any) => string | ValidateResult[] {
-  return (data: any): string | ValidateResult[] => {
+export function testChildrenWithTransformer(
+  transformer: Transformer
+): (data: any) => string | TransformResult[] {
+  return (data: any): string | TransformResult[] => {
     if (!Array.isArray(data) || data.length === 0) {
       return "expected an array, recieved something else";
     }
 
-    return data.map((child): ValidateResult => validator.validate(child));
+    return data.map((child): TransformResult => transformer.transform(child));
   };
 }
 
-export function testChildWithValidator(
-  validator: Validator
-): (data: any) => string | ValidateResult {
-  return (data: any): string | ValidateResult => {
+export function testChildWithTransformer(
+  transformer: Transformer
+): (data: any) => string | TransformResult {
+  return (data: any): string | TransformResult => {
     if (typeof data !== "object" || data === null) {
       return "expected a non-null object, recieved something else";
     }
 
-    return validator.validate(data);
+    return transformer.transform(data);
   };
 }

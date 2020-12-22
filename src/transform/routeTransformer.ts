@@ -1,13 +1,13 @@
-import Validator from "./validator";
+import Transformer from "./transformer";
 import {
   testType,
   testMarkdown,
   testList,
-  testChildrenWithValidator,
-} from "../util/validate";
+  testChildrenWithTransformer,
+} from "../util/transform";
 
-function generateParameterValidator(): Validator {
-  const result = new Validator();
+function generateParameterTransformer(): Transformer {
+  const result = new Transformer();
 
   result.registerRule({
     key: "key",
@@ -36,10 +36,10 @@ function generateParameterValidator(): Validator {
   return result;
 }
 
-function generateMethodValidator(): Validator {
-  const result = new Validator();
+function generateMethodTransformer(): Transformer {
+  const result = new Transformer();
 
-  const parameterValidator = generateParameterValidator();
+  const parameterTransformer = generateParameterTransformer();
 
   result.registerRule({
     key: "verb",
@@ -80,22 +80,22 @@ function generateMethodValidator(): Validator {
   result.registerRule({
     key: "responseData",
     required: false,
-    test: testChildrenWithValidator(parameterValidator),
+    test: testChildrenWithTransformer(parameterTransformer),
   });
 
   result.registerRule({
     key: "requestData",
     required: false,
-    test: testChildrenWithValidator(parameterValidator),
+    test: testChildrenWithTransformer(parameterTransformer),
   });
 
   return result;
 }
 
-export default function generateRouteValidator(): Validator {
-  const result = new Validator();
+export default function generateRouteTransformer(): Transformer {
+  const result = new Transformer();
 
-  const methodValidator = generateMethodValidator();
+  const methodTransformer = generateMethodTransformer();
 
   result.registerRule({
     key: "name",
@@ -106,7 +106,7 @@ export default function generateRouteValidator(): Validator {
   result.registerRule({
     key: "method",
     required: true,
-    test: testChildrenWithValidator(methodValidator),
+    test: testChildrenWithTransformer(methodTransformer),
   });
 
   return result;

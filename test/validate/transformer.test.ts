@@ -1,5 +1,5 @@
-import Validator from "../../src/validate/validator";
-import { succesfulDataValidateResult } from "../../src/util/validateResult";
+import Transformer from "../../src/transform/transformer";
+import { succesfulDataTransformResult } from "../../src/util/transformResult";
 
 function generateInput(
   extra: { [key: string]: unknown } = {}
@@ -10,23 +10,23 @@ function generateInput(
   };
 }
 
-function generateValidator(): Validator {
-  const result = new Validator();
+function generateTransformer(): Transformer {
+  const result = new Transformer();
   result.registerRule({
     key: "name",
     required: true,
     test: (data) =>
       typeof data !== "string"
         ? "Type is not string"
-        : succesfulDataValidateResult({ "": data }),
+        : succesfulDataTransformResult({ "": data }),
   });
   return result;
 }
 
-test("Validator will return succesful result with valid data.", () => {
-  const validator = generateValidator();
+test("Transformer will return succesful result with valid data.", () => {
+  const transformer = generateTransformer();
 
-  expect(validator.validate(generateInput())).toStrictEqual({
+  expect(transformer.transform(generateInput())).toStrictEqual({
     success: true,
     data: generateInput(),
     extra: [],
@@ -36,10 +36,10 @@ test("Validator will return succesful result with valid data.", () => {
   });
 });
 
-test("Validator will return failed result with non-object or null as input.", () => {
-  const validator = generateValidator();
+test("Transformer will return failed result with non-object or null as input.", () => {
+  const transformer = generateTransformer();
 
-  expect(validator.validate(null)).toStrictEqual({
+  expect(transformer.transform(null)).toStrictEqual({
     success: false,
     data: null,
     extra: [],
@@ -53,7 +53,7 @@ test("Validator will return failed result with non-object or null as input.", ()
       },
     ],
   });
-  expect(validator.validate(42)).toStrictEqual({
+  expect(transformer.transform(42)).toStrictEqual({
     success: false,
     data: null,
     extra: [],
@@ -67,7 +67,7 @@ test("Validator will return failed result with non-object or null as input.", ()
       },
     ],
   });
-  expect(validator.validate(false)).toStrictEqual({
+  expect(transformer.transform(false)).toStrictEqual({
     success: false,
     data: null,
     extra: [],
@@ -81,7 +81,7 @@ test("Validator will return failed result with non-object or null as input.", ()
       },
     ],
   });
-  expect(validator.validate("Hello World!")).toStrictEqual({
+  expect(transformer.transform("Hello World!")).toStrictEqual({
     success: false,
     data: null,
     extra: [],
@@ -95,7 +95,7 @@ test("Validator will return failed result with non-object or null as input.", ()
       },
     ],
   });
-  expect(validator.validate(() => {})).toStrictEqual({
+  expect(transformer.transform(() => {})).toStrictEqual({
     success: false,
     data: null,
     extra: [],
@@ -111,10 +111,12 @@ test("Validator will return failed result with non-object or null as input.", ()
   });
 });
 
-test("Validator will return failed result when too much input data is provided.", () => {
-  const validator = generateValidator();
+test("Transformer will return failed result when too much input data is provided.", () => {
+  const transformer = generateTransformer();
 
-  expect(validator.validate(generateInput({ not: "required" }))).toStrictEqual({
+  expect(
+    transformer.transform(generateInput({ not: "required" }))
+  ).toStrictEqual({
     success: false,
     data: generateInput(),
     extra: ["not"],
@@ -129,10 +131,10 @@ test("Validator will return failed result when too much input data is provided."
   });
 });
 
-test("Validator returns failed result when rule test fails.", () => {
-  const validator = generateValidator();
+test("Transformer returns failed result when rule test fails.", () => {
+  const transformer = generateTransformer();
 
-  expect(validator.validate(generateInput({ name: 42 }))).toStrictEqual({
+  expect(transformer.transform(generateInput({ name: 42 }))).toStrictEqual({
     success: false,
     data: {},
     extra: [],
@@ -147,10 +149,10 @@ test("Validator returns failed result when rule test fails.", () => {
   });
 });
 
-test("Validator returns failed result when required data is missing.", () => {
-  const validator = generateValidator();
+test("Transformer returns failed result when required data is missing.", () => {
+  const transformer = generateTransformer();
 
-  expect(validator.validate({})).toStrictEqual({
+  expect(transformer.transform({})).toStrictEqual({
     success: false,
     data: {},
     extra: [],
