@@ -1,4 +1,5 @@
 import Validator from "../../src/validate/validator";
+import { succesfulDataValidateResult } from "../../src/util/validateResult";
 
 function generateInput(
   extra: { [key: string]: unknown } = {}
@@ -15,7 +16,9 @@ function generateValidator(): Validator {
     key: "name",
     required: true,
     test: (data) =>
-      typeof data !== "string" ? "Type is not string" : undefined,
+      typeof data !== "string"
+        ? "Type is not string"
+        : succesfulDataValidateResult({ "": data }),
   });
   return result;
 }
