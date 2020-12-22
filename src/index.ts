@@ -3,6 +3,7 @@ import * as path from "path";
 import * as sass from "sass";
 import generateRouteValidator from "./validate/routeValidator";
 import generateGroupValidator from "./validate/groupValidator";
+import ValidateResult from "./validate/validateResult";
 import ConfigData from "./config/configData";
 import HtmlWriter from "./writer/htmlWriter";
 import parseInput from "./parser/parseInput";
@@ -24,32 +25,52 @@ export async function document(configPath: string) {
   const routeValidator = generateRouteValidator();
   const groupValidator = generateGroupValidator();
 
-  if (
-    data.routes.some((route) => {
-      const result = routeValidator.validate(route);
+  let success = true;
 
-      result.messages.forEach((message) => {
-        console.warn(`[${message.key}] => ${message.problem}`);
-      });
+  const routeResults: any[] = [];
+  const groupResults: any[] = [];
 
-      return !result.success;
-    }) ||
-    data.groups.some((group) => {
-      const result = groupValidator.validate(group);
+  data.routes.forEach((route) => {
+    const result = routeValidator.validate(route);
 
-      result.messages.forEach((message) => {
-        console.warn(`[${message.key}] => ${message.problem}`);
-      });
+    const resultName = result.data?.name ? result.data.name : "Unknown route";
 
-      return !result.success;
-    })
-  ) {
-    console.log("invalid data!");
+    if (result.messages.length === 0) {
+      routeResults.push(result.data);
+      return;
+    }
+    success = false;
+    console.warn(`\n###route:${resultName}`);
+    result.messages.forEach((message) => {
+      console.warn(`    [${message.key}] => ${message.problem}`);
+    });
+  });
+
+  data.groups.forEach((group) => {
+    const result = groupValidator.validate(group);
+
+    const resultName = result.data?.name ? result.data.name : "Unknown group";
+
+    if (result.messages.length === 0) {
+      groupResults.push(result.data);
+      return;
+    }
+
+    success = false;
+    console.warn(`\n###group:${resultName}`);
+    result.messages.forEach((message) => {
+      console.warn(`    [${message.key}] => ${message.problem}`);
+    });
+  });
+
+  if (!success) {
+    return;
   }
+
   await fs.mkdir(path.join(config.outputDir, "routes"), { recursive: true });
   await fs.mkdir(path.join(config.outputDir, "groups"), { recursive: true });
   await Promise.all(
-    data.routes.map(async (route) => {
+    routeResults.map(async (route) => {
       const writtenRoute = await writer.writeRoute(route, {
         ...data.global,
         style: "../style.css",
@@ -65,7 +86,7 @@ export async function document(configPath: string) {
   );
 
   await Promise.all(
-    data.groups.map(async (group) => {
+    groupResults.map(async (group) => {
       const writtenGroup = await writer.writeGroup(group, {
         ...data.global,
         style: "../style.css",
