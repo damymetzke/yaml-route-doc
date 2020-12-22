@@ -1,13 +1,45 @@
+import marked from "marked";
 import ValidateResult from "./validateResult";
 import Validator from "./validator";
-import {
-  mergeValidateResult,
-  addKeyPrefixToValidateResult,
-  defaultValidateResult,
-  succesfulDataValidateResult,
-  addArrayToObject,
-} from "../util/validateResult";
+import { succesfulDataValidateResult } from "../util/validateResult";
 
+function testMarkdown(): (data: any) => string | ValidateResult {
+  return (data: any): string | ValidateResult => {
+    if (typeof data !== "string") {
+      return `expected type 'string', recieved type '${typeof data}'.`;
+    }
+
+    return succesfulDataValidateResult({
+      "": marked(data),
+    });
+  };
+}
+
+function testArray(
+  test: RegExp = /[^]*/
+): (data: any) => string | ValidateResult {
+  return (data: any): string | ValidateResult => {
+    let result: string[] = [];
+    if (Array.isArray(data)) {
+      if (!data.every((value) => typeof value === "string")) {
+        return `recieved array, but expected all elements to be of type 'string'.`;
+      }
+      result = data;
+    } else if (typeof data === "string") {
+      result = data.split("|");
+    } else {
+      return `expected type 'string' or 'array'.`;
+    }
+
+    if (!result.every((value) => test.test(value))) {
+      return `regular expression failed`;
+    }
+
+    return succesfulDataValidateResult({
+      "": result,
+    });
+  };
+}
 function testType(
   type:
     | "bigint"
@@ -44,7 +76,7 @@ function generateParameterValidator(): Validator {
   result.registerRule({
     key: "description",
     required: true,
-    test: testType("string"),
+    test: testMarkdown(),
   });
 
   result.registerRule({
@@ -76,31 +108,31 @@ function generateMethodValidator(): Validator {
   result.registerRule({
     key: "description",
     required: true,
-    test: testType("string"),
+    test: testMarkdown(),
   });
 
   result.registerRule({
     key: "auth",
     required: false,
-    test: testType("string"),
+    test: testArray(/^[a-zA-Z0-9]*$/),
   });
 
   result.registerRule({
     key: "role",
     required: false,
-    test: testType("string"),
+    test: testArray(/^[a-zA-Z0-9]*$/),
   });
 
   result.registerRule({
     key: "responseType",
     required: true,
-    test: testType("string"),
+    test: testArray(/^[a-zA-Z0-9/\-.+]*$/),
   });
 
   result.registerRule({
     key: "requestType",
     required: false,
-    test: testType("string"),
+    test: testArray(/^[a-zA-Z0-9/\-.+]*$/),
   });
 
   result.registerRule({
