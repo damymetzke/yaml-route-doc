@@ -1,13 +1,13 @@
-import Validator from "./validator";
+import Transformer from "./transformer";
 import {
   testType,
   testMarkdown,
   testList,
-  testChildWithValidator,
-} from "../util/validate";
+  testChildWithTransformer,
+} from "../util/transform";
 
-function generateVariableValidator(): Validator {
-  const result = new Validator();
+function generateVariableTransformer(): Transformer {
+  const result = new Transformer();
 
   result.registerRule({
     key: "responseType",
@@ -36,10 +36,10 @@ function generateVariableValidator(): Validator {
   return result;
 }
 
-export default function generateGroupValidator(): Validator {
-  const result = new Validator();
+export default function generateGroupTransformer(): Transformer {
+  const result = new Transformer();
 
-  const variableValidator = generateVariableValidator();
+  const variableTransformer = generateVariableTransformer();
 
   result.registerRule({
     key: "name",
@@ -56,7 +56,7 @@ export default function generateGroupValidator(): Validator {
   result.registerRule({
     key: "variables",
     required: false,
-    test: testChildWithValidator(variableValidator),
+    test: testChildWithTransformer(variableTransformer),
   });
 
   return result;

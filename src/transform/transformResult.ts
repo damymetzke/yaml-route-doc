@@ -1,4 +1,4 @@
-export default interface ValidateResult {
+export default interface TransformResult {
   success: boolean;
   data: any;
   extra: string[];

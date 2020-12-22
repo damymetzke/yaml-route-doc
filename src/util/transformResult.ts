@@ -1,10 +1,10 @@
-import ValidateResult from "../validate/validateResult";
+import TransformResult from "../transform/transformResult";
 
-function deepMergeValidateResultArray(
-  total: ValidateResult,
-  current: ValidateResult,
+function deepMergeTransformResultArray(
+  total: TransformResult,
+  current: TransformResult,
   objectName: string
-): ValidateResult {
+): TransformResult {
   return {
     success: total.success && current.success,
     data: { [objectName]: [...total.data[objectName], current.data[""]] },
@@ -18,10 +18,10 @@ function deepMergeValidateResultArray(
 /**
  * @deprecated use addToObject or addArrayToObject instead
  */
-export function addKeyPrefixToValidateResult(
-  a: ValidateResult,
+export function addKeyPrefixToTransformResult(
+  a: TransformResult,
   prefix: string
-): ValidateResult {
+): TransformResult {
   return {
     success: a.success,
     data: a.data,
@@ -36,9 +36,9 @@ export function addKeyPrefixToValidateResult(
 }
 
 export function addToObject(
-  a: ValidateResult,
+  a: TransformResult,
   objectName: string
-): ValidateResult {
+): TransformResult {
   return {
     success: a.success,
     data:
@@ -53,10 +53,10 @@ export function addToObject(
   };
 }
 
-export function mergeValidateResult(
-  a: ValidateResult,
-  b: ValidateResult
-): ValidateResult {
+export function mergeTransformResult(
+  a: TransformResult,
+  b: TransformResult
+): TransformResult {
   return {
     success: a.success && b.success,
     data: { ...a.data, ...b.data },
@@ -67,7 +67,7 @@ export function mergeValidateResult(
   };
 }
 
-export function defaultValidateResult(): ValidateResult {
+export function defaultTransformResult(): TransformResult {
   return {
     success: true,
     data: {},
@@ -78,9 +78,9 @@ export function defaultValidateResult(): ValidateResult {
   };
 }
 
-export function succesfulDataValidateResult(data: {
+export function succesfulDataTransformResult(data: {
   [key: string]: any;
-}): ValidateResult {
+}): TransformResult {
   return {
     success: true,
     data,
@@ -92,9 +92,9 @@ export function succesfulDataValidateResult(data: {
 }
 
 export function addArrayToObject(
-  a: ValidateResult[],
+  a: TransformResult[],
   objectName: string
-): ValidateResult {
+): TransformResult {
   return a
     .map((value, index) => ({
       success: value.success,
@@ -109,7 +109,7 @@ export function addArrayToObject(
     }))
     .reduce(
       (total, current) =>
-        deepMergeValidateResultArray(total, current, objectName),
-      succesfulDataValidateResult({ [objectName]: [] })
+        deepMergeTransformResultArray(total, current, objectName),
+      succesfulDataTransformResult({ [objectName]: [] })
     );
 }

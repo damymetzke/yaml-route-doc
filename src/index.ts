@@ -1,9 +1,8 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import * as sass from "sass";
-import generateRouteValidator from "./validate/routeValidator";
-import generateGroupValidator from "./validate/groupValidator";
-import ValidateResult from "./validate/validateResult";
+import generateRouteTransformer from "./transform/routeTransformer";
+import generateGroupTransformer from "./transform/groupTransformer";
 import ConfigData from "./config/configData";
 import HtmlWriter from "./writer/htmlWriter";
 import parseInput from "./parser/parseInput";
@@ -22,8 +21,8 @@ export async function document(configPath: string) {
     },
   };
 
-  const routeValidator = generateRouteValidator();
-  const groupValidator = generateGroupValidator();
+  const routeTransformer = generateRouteTransformer();
+  const groupTransformer = generateGroupTransformer();
 
   let success = true;
 
@@ -31,7 +30,7 @@ export async function document(configPath: string) {
   const groupResults: any[] = [];
 
   data.routes.forEach((route) => {
-    const result = routeValidator.validate(route);
+    const result = routeTransformer.transform(route);
 
     const resultName = result.data?.name ? result.data.name : "Unknown route";
 
@@ -41,13 +40,13 @@ export async function document(configPath: string) {
     }
     success = false;
     console.warn(`\n###route:${resultName}`);
-    result.messages.forEach((message) => {
+    result.messages.forEach((message: { key: string; problem: string }) => {
       console.warn(`    [${message.key}] => ${message.problem}`);
     });
   });
 
   data.groups.forEach((group) => {
-    const result = groupValidator.validate(group);
+    const result = groupTransformer.transform(group);
 
     const resultName = result.data?.name ? result.data.name : "Unknown group";
 
@@ -58,7 +57,7 @@ export async function document(configPath: string) {
 
     success = false;
     console.warn(`\n###group:${resultName}`);
-    result.messages.forEach((message) => {
+    result.messages.forEach((message: { key: string; problem: string }) => {
       console.warn(`    [${message.key}] => ${message.problem}`);
     });
   });

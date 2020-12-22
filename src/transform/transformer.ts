@@ -1,18 +1,17 @@
 import {
-  addKeyPrefixToValidateResult,
   addToObject,
   addArrayToObject,
-  mergeValidateResult,
-} from "../util/validateResult";
-import ValidateResult from "./validateResult";
-import ValidateRule from "./validateRule";
+  mergeTransformResult,
+} from "../util/transformResult";
+import TransformResult from "./transformResult";
+import TransformRule from "./transformRule";
 
-export default class Validator {
-  #rules: { [key: string]: ValidateRule } = {};
+export default class Transformer {
+  #rules: { [key: string]: TransformRule } = {};
 
   #required: Set<string> = new Set();
 
-  validate(data: unknown): ValidateResult {
+  transform(data: unknown): TransformResult {
     if (typeof data !== "object" || data === null) {
       return {
         success: false,
@@ -32,7 +31,7 @@ export default class Validator {
 
     const required = new Set(this.#required);
 
-    let result: ValidateResult = {
+    let result: TransformResult = {
       success: true,
       data: {},
       extra: [],
@@ -62,11 +61,14 @@ export default class Validator {
 
       const testResult = this.#rules[key].test(value);
       if (Array.isArray(testResult)) {
-        result = mergeValidateResult(result, addArrayToObject(testResult, key));
+        result = mergeTransformResult(
+          result,
+          addArrayToObject(testResult, key)
+        );
         return;
       }
       if (typeof testResult === "object") {
-        result = mergeValidateResult(result, addToObject(testResult, key));
+        result = mergeTransformResult(result, addToObject(testResult, key));
         return;
       }
       if (typeof testResult === "string") {
@@ -98,7 +100,7 @@ export default class Validator {
     return result;
   }
 
-  registerRule(rule: ValidateRule) {
+  registerRule(rule: TransformRule) {
     this.#rules[rule.key] = rule;
     if (rule.required) {
       this.#required.add(rule.key);
