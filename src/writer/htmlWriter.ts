@@ -46,6 +46,11 @@ export default class HtmlWriter implements IWriter {
           .replace(/}/g, "")}.html`
     );
 
+    handlebars.registerHelper(
+      "concat",
+      (a: string, b: string): string => a + b
+    );
+
     return this;
   }
 
