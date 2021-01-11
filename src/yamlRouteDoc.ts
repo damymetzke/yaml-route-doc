@@ -3,12 +3,12 @@
 import { ArgumentParser } from "argparse";
 import prompts from "prompts";
 import { promises as fs } from "fs";
+import * as fsExtra from "fs-extra";
 import * as yaml from "yaml";
 import * as path from "path";
 import { document } from "./index";
 
 async function init(args: any) {
-  console.log(args);
   const location =
     args.initRoot !== ""
       ? { root: args.initRoot }
@@ -17,49 +17,32 @@ async function init(args: any) {
           name: "root",
           message: "Where should the root of the route documentation be?",
         });
-  await fs.mkdir(path.join(location.root, "templates/partials"), {
+  await fs.mkdir(location.root, {
     recursive: true,
   });
-  await fs.mkdir(path.join(location.root, "routes"));
-  await fs.mkdir(path.join(location.root, "styles"));
 
   await Promise.all([
     fs.writeFile(
       path.join(location.root, "config.yml"),
       yaml.stringify({
-        routesDir: "routes",
+        routesDir: "data",
         outputDir: "output",
-        style: "styles/style.css",
-        templates: "templates",
-        partials: "templates/partials",
+        style: "style/style.scss",
+        templates: "template",
+        partials: "template/partials",
       })
     ),
-    fs.copyFile(
-      path.join(__dirname, "../resource/htmlTemplate/route.handlebars"),
-      path.join(location.root, "templates/route.handlebars")
+    fsExtra.copy(
+      path.join(__dirname, "../resource/html/default"),
+      path.join(location.root, "template")
     ),
-    fs.copyFile(
-      path.join(__dirname, "../resource/htmlTemplate/index.handlebars"),
-      path.join(location.root, "templates/index.handlebars")
+    fsExtra.copy(
+      path.join(__dirname, "../resource/style/default"),
+      path.join(location.root, "style")
     ),
-    fs.copyFile(
-      path.join(
-        __dirname,
-        "../resource/htmlTemplate/routeParameter.handlebars"
-      ),
-      path.join(location.root, "templates/partials/routeParameter.handlebars")
-    ),
-    fs.copyFile(
-      path.join(__dirname, "../resource/style/default.scss"),
-      path.join(location.root, "styles/style.scss")
-    ),
-    ...(
-      await fs.readdir(path.join(__dirname, "../resource/dummy"))
-    ).map((file) =>
-      fs.copyFile(
-        path.join(__dirname, "../resource/dummy", file),
-        path.join(location.root, "routes", file)
-      )
+    fsExtra.copy(
+      path.join(__dirname, "../resource/data/dummy"),
+      path.join(location.root, "data")
     ),
   ]);
 
