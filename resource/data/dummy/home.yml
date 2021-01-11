@@ -1,0 +1,12 @@
+routes:
+  - name: /
+    method:
+      - verb: GET
+        description: |
+          'Home' URL.
+          This is the root of the website.
+          It contains the following:
+
+          - Short description of the website.
+          - Latest 10 posts.
+          - Up to 3 pinned posts.

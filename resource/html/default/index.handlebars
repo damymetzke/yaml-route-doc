@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        {{#if global.style}}
+        <link rel="stylesheet" href="{{{global.style}}}">
+        {{/if}}
+
+        <title>Yaml Route Doc index</title>
+    </head>
+
+    <body class="{{{global.classPrefix}}}index">
+        <h1>Yaml Route Doc Index</h1>
+
+        {{#if routes}}
+        <div class="{{{global.classPrefix}}}card {{{global.classPrefix}}}index--route">
+            <h2>Routes</h2>
+            <nav>
+                <ul>
+                    {{#each routes}}
+                    <li class="{{{global.classPrefix}}}index--route--item">
+                        <a href="routes/{{{routeToFile name}}}">{{name}}</a>
+                    </li>
+                    {{/each}}
+                </ul>
+            </nav>
+        </div>
+        {{/if}}
+
+        {{#if groups}}
+        <div class="{{{global.classPrefix}}}card {{{global.classPrefix}}}index--group">
+            <h2>Groups</h2>
+            <nav>
+                <ul>
+
+                    {{#each groups}}
+                    <li class="{{{global.classPrefix}}}index--group--item">
+                        <a href="groups/{{{routeToFile name}}}">{{name}}</a>
+                    </li>
+                    {{/each}}
+
+                </ul>
+            </nav>
+        </div>
+        {{/if}}
+
+    </body>
+
+</html>

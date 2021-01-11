@@ -1,0 +1,27 @@
+@use './variables' as vars;
+@use 'sass:map';
+
+// Move content to the middle.
+body{
+  max-width: map.get(vars.$body, 'width-max');
+  margin: map.get(vars.$body, 'vertical-margin') auto;
+}
+
+// Text
+* {
+  font-size: map.get(vars.$text-size, 'normal');
+  font-family: map.get(vars.$text-font, 'normal');
+  color: map.get(vars.$color, 'foreground');
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-family: map.get(vars.$text-font, 'header');
+}
+
+h3, h4, h5, h6{
+  font-size: map.get(vars.$text-size, 'header-small');
+}
+
+h1, h2{
+  font-size: map.get(vars.$text-size, 'header-large');
+}

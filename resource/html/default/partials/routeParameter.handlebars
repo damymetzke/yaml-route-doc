@@ -1,0 +1,25 @@
+<li class="{{{prefix}}}item">
+    <h4>{{key}}</h4>
+    <div class="{{{global.classPrefix}}}card {{{prefix}}}item--description">
+        <h5>Description</h5>
+        <div class="{{{global.classPrefix}}}markdown">
+            {{{description}}}
+        </div>
+    </div>
+
+    <div class="{{{global.classPrefix}}}card {{{prefix}}}item--type">
+        <h5>Type</h5>
+        <p>
+            {{type}}
+        </p>
+    </div>
+
+    {{#if restrictions}}
+    <div class="{{{global.classPrefix}}}card {{{prefix}}}item--restrictions">
+        <h5>Restrictions</h5>
+        <p>
+            {{restrictions}}
+        </p>
+    </div>
+    {{/if}}
+</li>

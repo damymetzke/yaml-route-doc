@@ -1,0 +1,16 @@
+groups:
+  - name: /
+    description: |
+      This is the root
+    variables:
+      responseType: text/html
+      auth: none
+
+  - name: /admin
+    description: |
+      This URL is exclusive for site administrators.
+      If the client is not logged in they will be redirected to [/admin/login](route:/admin/login)
+      No links within the site go to this URL when the client is not logged in.
+      To access admin pages an administrator has to manually enter any admin URL.
+    variables:
+      auth: web

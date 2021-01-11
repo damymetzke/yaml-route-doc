@@ -1,0 +1,64 @@
+@use './variables' as vars;
+@use 'sass:map';
+
+.#{vars.$prefix}
+{
+  // Each card has 2 children:
+  // - header (h*)
+  // - content (*)
+  // Cards can be any size.
+  // Cards can be nexted in other cards. 
+  &card{
+      // Indentation
+      margin-left: map.get(vars.$spacing, 'medium');
+      padding-left: map.get(vars.$spacing, 'small');
+
+      // Left border results in a line on the left, indicating that this is a unique thing
+      border-left: map.get(vars.$border, 'medium') solid map.get(vars.$color, 'foreground');
+  }
+
+  // A list is an array of strings.
+  // There will be no complex structures inside a list.
+  // There can be inline styling using <span>, <b>, etc.
+  &list{
+    list-style: none;
+    padding-left: 0;
+
+    // Setup flexbox for list
+    display: flex;
+    row-gap: map.get(vars.$spacing, 'small');
+    flex-direction: column;
+    align-items: flex-start;
+
+    li{
+      border: map.get(vars.$border, 'small') solid map.get(vars.$color, 'foreground');
+      padding: map.get(vars.$spacing, 'small');
+      
+      // The first item is treated as the default.
+      // All other items are treated as optional and as such are styled differently.
+      + li{
+        border: map.get(vars.$border, 'small') dashed map.get(vars.$color, 'foreground');
+      }
+    }
+  }
+
+  // An array is an array of larger content, unlike lists which are used for small string content.
+  &array{
+    list-style: none;
+    > li{
+      border-left: map.get(vars.$border, 'large') solid map.get(vars.$color, 'foreground');
+      padding-left: map.get(vars.$spacing, 'large');
+    }
+  }
+
+  // All text parsed by markdown will be put in a markdown field.
+  &markdown{
+    ol, ul{
+        margin-left: inherit;
+  
+        // Markdown blocks can exist on different list nesting levels.
+        // Force a specific list style to negate the effects of this variable indentation.
+        list-style: disc;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+routes:
+  - name: /post
+    method:
+      - verb: GET
+        description: |
+          Show a list of all posts.
+          Posts can be sort by date, or popularity.
+          Posts can be filtered with a text search.
+  - name: /post/{slug-or-id}
+    method:
+      - verb: GET
+        description: |
+          Show a specific post.
+          If the post is accessed with the id the client is redirected to the slug.
+          If the slug has been changed it will automatically redirect to the new slug.
