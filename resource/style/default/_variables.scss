@@ -1,0 +1,37 @@
+// Common prefix for all classes
+$prefix: 'routedoc--';
+
+$color: (
+    // Used for text, borders, etc.
+    'foreground': hsl(0, 0%, 0%),
+    // Used for background
+    'background': hsl(0, 0%, 100%)
+);
+
+$text-size: (
+    'normal': 1rem,
+    'header-small': 1.2rem,
+    'header-large': 2rem
+);
+
+$text-font: (
+    'normal': sans-serif,
+    'header': serif
+);
+
+$body: (
+    'width-max': min(1000px, calc(100vw - 100px)),
+    'vertical-margin': 10px
+);
+
+$spacing: (
+    'small': 3px,
+    'medium': 10px,
+    'large': 20px
+);
+
+$border: (
+    'small': 1px,
+    'medium': 2px,
+    'large': 4px
+)

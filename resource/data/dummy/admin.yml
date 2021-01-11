@@ -1,0 +1,169 @@
+routes:
+  - name: /admin
+    method:
+      - verb: GET
+        description: |
+          Central control panel for site administrators.
+          Contains The following information:
+
+          - Analytical data (visitors, popular posts, etc.).
+          - Notifications.
+          - Links to edit latest posts.
+
+  - name: /admin/post
+    method:
+      - verb: GET
+        description: |
+          List of all posts.
+          This route contains more information than [/post](route:/post).
+          Clicking a post will redirect to the **edit** page: [/admin/post/{id}](route:/admin/post/{id})
+      - verb: POST
+        description: |
+          Create a new post.
+        requestType: application/json
+        requestData:
+          - key: title
+            description: |
+              The title of the new post.
+              This is not the same as the *slug*,
+              it will not be used in URL.
+            type: string
+            restrictions: 0 < Length <= 64.
+          - key: body
+            description: |
+              The body of the post.
+            type: string
+            restrictions: 0 < Length
+          - key: slug
+            description: |
+              This will be used to create user-friendly URLs.
+              For example:
+
+              > If the slug is `my-first-post`,
+              > The url will be `/post/my-first-post`.
+
+              This slug is considered permanent,
+              but can be turned into a redirect in the future if the slug changes.
+            type: string
+            restrictions: 0 < Length <= 32, characters = [a-zA-Z0-9\-]
+        responseType: application/json
+        responseData:
+          - key: id
+            description: |
+              The unique id for this post
+            type: int
+            restrictions: 0 < n, unique
+          - key: title
+            description: |
+              The title of the new post.
+              This is not the same as the *slug*,
+              it will not be used in URL.
+            type: string
+            restrictions: 0 < Length <= 64.
+          - key: body
+            description: |
+              The body of the post.
+            type: string
+            restrictions: 0 < Length
+          - key: slug
+            description: |
+              This will be used to create user-friendly URLs.
+              For example:
+
+              > If the slug is `my-first-post`,
+              > The url will be `/post/my-first-post`.
+
+              This slug is considered permanent,
+              but can be turned into a redirect in the future if the slug changes.
+            type: string
+            restrictions: 0 < Length <= 32, characters = [a-zA-Z0-9\-]
+
+
+  - name: /admin/post/{id}
+    method:
+      - verb: GET
+        description: |
+          Show an edit page for a specific `id`.
+          Here the client is able to edit:
+
+          - Title (has no effect on the URL).
+          - Body.
+          - Slug (the old slug will turn into a permanent redirect).
+
+          Alternatively the client can delete the post.
+          The post can be recovered within 30 days.
+      - verb: PATCH
+        description: |
+          Edit fields of an existing post.
+        requestType: application/json
+        requestData:
+          - key: id
+            description: |
+              The unique id for the post that should be edited.
+            type: int
+            restrictions: 0 < n, unique
+          - key: title
+            description: |
+              The new title for this post.
+            type: string
+            restrictions: 0 < Length <= 64.
+          - key: body
+            description: |
+              The new body for this post.
+            type: string
+            restrictions: 0 < Length
+          - key: slug
+            description: |
+              A new slug for this post.
+              The old slug will not be a permanent redirect to the new slug.
+            type: string
+            restrictions: 0 < Length <= 32, characters = [a-zA-Z0-9\-], unique
+        responseType: application/json
+        responseData:
+          - key: id
+            description: |
+              The id of the post.
+            type: int
+            restrictions: 0 < n, unique
+          - key: title
+            description: |
+              The title of the post.
+            type: string
+            restrictions: 0 < Length <= 64.
+          - key: body
+            description: |
+              The bosy of the post.
+            type: string
+            restrictions: 0 < Length
+          - key: slug
+            description: |
+              The slug of the post.
+            type: string
+            restrictions: 0 < Length <= 32, characters = [a-zA-Z0-9\-], unique
+      - verb: DELETE
+        description: |
+          Delete an existing post.
+        requestType: application/json
+        requestData:
+          - key: id
+            description: |
+              Id of the post that should be deleted.
+            type: int
+            restrictions: 0 < n
+        responseType: application/json
+        responseData:
+          - key: success
+            description: |
+              - True => deletion was a success.
+              - False => deletion was not a success.
+            type: boolean
+  - name: /admin/login
+    method:
+      - verb: GET
+        description: |
+          Show login for administrators.
+        auth: none
+
+
+
+  

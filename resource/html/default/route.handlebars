@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        {{#if global.style}}
+        <link rel="stylesheet" href="{{{global.style}}}">
+        {{/if}}
+
+        <title>Route - {{name}}</title>
+    </head>
+
+    <body class="{{{global.classPrefix}}}route {{{global.classPrefix}}}route">
+        <header>
+            <nav class="{{{global.classPrefix}}}nav">
+                <a href="../">Index</a>
+            </nav>
+        </header>
+
+        <main>
+
+            <h1>{{name}}</h1>
+
+            <ul class="{{{global.classPrefix}}}array {{{global.classPrefix}}}route--method">
+                {{#each method}}
+                <li>
+                    <h2>{{verb}}</h2>
+
+                    <div class="{{{../global.classPrefix}}}card {{{global.classPrefix}}}route--method--description">
+                        <h3>Description</h3>
+                        <div class="{{{../global.classPrefix}}}markdown">
+                            {{{description}}}
+                        </div>
+                    </div>
+
+                    {{#if auth}}
+                    <div
+                        class="{{{../global.classPrefix}}}card {{{global.classPrefix}}}route--method--authentication-type">
+                        <h3>Authentication Type</h3>
+                        <ol class="{{{../global.classPrefix}}}list">
+                            {{#each auth}}
+                            <li>
+                                {{this}}
+                            </li>
+                            {{/each}}
+                        </ol>
+                    </div>
+                    {{/if}}
+
+                    {{#if role}}
+                    <div
+                        class="{{{../global.classPrefix}}}card {{{global.classPrefix}}}route--method--authentication-role">
+                        <h3>Authentication Role</h3>
+                        <ol class="{{{../global.classPrefix}}}list">
+                            {{#each role}}
+                            <li>
+                                {{this}}
+                            </li>
+                            {{/each}}
+                        </ol>
+                    </div>
+                    {{/if}}
+
+                    {{#if requestType}}
+                    <div class="{{{../global.classPrefix}}}card {{{global.classPrefix}}}route--method--request-type">
+                        <h3>Request Type</h3>
+                        <ol class="{{{../global.classPrefix}}}list">
+                            {{#each requestType}}
+                            <li>
+                                {{this}}
+                            </li>
+                            {{/each}}
+                        </ol>
+                    </div>
+                    {{/if}}
+
+                    {{#if requestData}}
+                    <div
+                        class="{{{../global.classPrefix}}}card {{{global.classPrefix}}}route--method--request-parameters">
+                        <h3>Request Parameters</h3>
+                        <ul class="{{{../global.classPrefix}}}array">
+
+                            {{#each requestData}}
+
+                            {{> routeParameter this global=../../global prefix=(concat ../../global.classPrefix 'route--method--request-parameters--')}}
+
+                            {{/each}}
+
+                        </ul>
+                    </div>
+                    {{/if}}
+
+                    {{#if responseType}}
+                    <div class="{{{../global.classPrefix}}}card {{{global.classPrefix}}}route--method--response-type">
+                        <h3>Response Type</h3>
+                        <ol class="{{{../global.classPrefix}}}list">
+                            {{#each responseType}}
+                            <li>
+                                {{this}}
+                            </li>
+                            {{/each}}
+                        </ol>
+                    </div>
+                    {{/if}}
+
+                    {{#if responseData}}
+                    <div
+                        class="{{{../global.classPrefix}}}card {{{global.classPrefix}}}route--method--response-parameters">
+                        <h3>Response Parameters</h3>
+                        <ul class="{{{../global.classPrefix}}}array">
+
+                            {{#each responseData}}
+
+                            {{> routeParameter this global=../../global prefix=(concat ../../global.classPrefix 'route--method--response-parameters--')}}
+
+                            {{/each}}
+
+                        </ul>
+                    </div>
+                    {{/if}}
+
+                </li>
+                {{/each}}
+            </ul>
+
+        </main>
+    </body>
+
+</html>

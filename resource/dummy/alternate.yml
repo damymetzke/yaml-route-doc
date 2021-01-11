@@ -1,6 +1,0 @@
-routes:
-  - name: /alternate
-    method:
-      - verb: GET
-        description: you can split routes between files any way you want.
-        responseType: application/json|application/xml
