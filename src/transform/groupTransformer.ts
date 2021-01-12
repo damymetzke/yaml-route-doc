@@ -50,7 +50,7 @@ export default function generateGroupTransformer(): Transformer {
   result.registerRule({
     key: "description",
     required: true,
-    test: testMarkdown(),
+    test: testMarkdown("../routes/", "./"),
   });
 
   result.registerRule({
