@@ -3,11 +3,53 @@ import TransformResult from "../transform/transformResult";
 import Transformer from "../transform/transformer";
 import { succesfulDataTransformResult } from "./transformResult";
 
-export function testMarkdown(): (data: any) => string | TransformResult {
+const REGEX_ROUTE_LINK = /^route:(?<uri>[^]*)$/;
+const REGEX_GROUP_LINK = /^group:(?<uri>[^]*)$/;
+
+export function testMarkdown(
+  relativeToRoute: string,
+  relativeToGroup: string
+): (data: any) => string | TransformResult {
   return (data: any): string | TransformResult => {
     if (typeof data !== "string") {
       return `expected type 'string', recieved type '${typeof data}'.`;
     }
+
+    marked.use({
+      renderer: <any>{
+        link(href: string, title: string, text: string) {
+          const convertedHref = (() => {
+            const routeResult = REGEX_ROUTE_LINK.exec(href);
+            if (routeResult !== null) {
+              const uri = routeResult.groups?.uri;
+              if (uri === undefined) {
+                return "#";
+              }
+
+              return `${relativeToRoute}${uri
+                .replace(/\//g, "_")
+                .replace(/{/g, "_")
+                .replace(/}/g, "")}.html`;
+            }
+
+            const groupResult = REGEX_GROUP_LINK.exec(href);
+            if (groupResult !== null) {
+              const uri = groupResult.groups?.uri;
+              if (uri === undefined) {
+                return "#";
+              }
+              return `${relativeToGroup}${uri
+                .replace(/\//g, "_")
+                .replace(/{/g, "_")
+                .replace(/}/g, "")}.html`;
+            }
+            return href;
+          })();
+          const titleText = title === null ? "" : ` title=${title}`;
+          return `<a href=${convertedHref}${titleText}>${text}</a>`;
+        },
+      },
+    });
 
     return succesfulDataTransformResult({
       "": marked(data),

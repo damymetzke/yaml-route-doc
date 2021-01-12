@@ -18,7 +18,7 @@ function generateParameterTransformer(): Transformer {
   result.registerRule({
     key: "description",
     required: true,
-    test: testMarkdown(),
+    test: testMarkdown("./", "../groups/"),
   });
 
   result.registerRule({
@@ -50,7 +50,7 @@ function generateMethodTransformer(): Transformer {
   result.registerRule({
     key: "description",
     required: true,
-    test: testMarkdown(),
+    test: testMarkdown("./", "../groups/"),
   });
 
   result.registerRule({
