@@ -82,17 +82,26 @@ export default class HtmlWriter implements IWriter {
     this.#indexTemplate = handlebars.compile(
       (
         await fs.readFile(path.join(templatesPath, "index.handlebars"))
-      ).toString()
+      ).toString(),
+      {
+        preventIndent: true,
+      }
     );
     this.#routeTemplate = handlebars.compile(
       (
         await fs.readFile(path.join(templatesPath, "route.handlebars"))
-      ).toString()
+      ).toString(),
+      {
+        preventIndent: true,
+      }
     );
     this.#groupTemplate = handlebars.compile(
       (
         await fs.readFile(path.join(templatesPath, "group.handlebars"))
-      ).toString()
+      ).toString(),
+      {
+        preventIndent: true,
+      }
     );
   }
 }
