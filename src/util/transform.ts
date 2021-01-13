@@ -1,4 +1,5 @@
 import marked from "marked";
+import highlight from "highlight.js";
 import TransformResult from "../transform/transformResult";
 import Transformer from "../transform/transformer";
 import { succesfulDataTransformResult } from "./transformResult";
@@ -47,6 +48,11 @@ export function testMarkdown(
           })();
           const titleText = title === null ? "" : ` title=${title}`;
           return `<a href=${convertedHref}${titleText}>${text}</a>`;
+        },
+        code(code: string, infoString: string) {
+          return `<pre><code class="language-${infoString}">\n${
+            highlight.highlight(infoString, code).value
+          }\n</code></pre>`;
         },
       },
     });
