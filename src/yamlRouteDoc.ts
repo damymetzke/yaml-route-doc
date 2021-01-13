@@ -36,10 +36,20 @@ async function init(args: any) {
       path.join(__dirname, "../resource/html/default"),
       path.join(location.root, "template")
     ),
-    fsExtra.copy(
-      path.join(__dirname, "../resource/style/default"),
-      path.join(location.root, "style")
-    ),
+    fsExtra
+      .copy(
+        path.join(__dirname, "../resource/style/default"),
+        path.join(location.root, "style")
+      )
+      .then(() =>
+        fsExtra.copy(
+          path.join(
+            path.dirname(require.resolve("highlight.js")),
+            "../scss/github.scss"
+          ),
+          path.join(location.root, "style/_highlight.scss")
+        )
+      ),
     fsExtra.copy(
       path.join(__dirname, "../resource/data/dummy"),
       path.join(location.root, "data")
