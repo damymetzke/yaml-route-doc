@@ -26,7 +26,7 @@
   "author": "Damy Metzke",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.13.1",
+    "@babel/core": "^7.13.8",
     "@babel/preset-env": "^7.13.5",
     "@types/argparse": "^2.0.5",
     "@types/fs-extra": "^9.0.7",
