@@ -29,7 +29,7 @@
     "@babel/core": "^7.13.8",
     "@babel/preset-env": "^7.13.5",
     "@types/argparse": "^2.0.5",
-    "@types/fs-extra": "^9.0.7",
+    "@types/fs-extra": "^9.0.8",
     "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.15.2",
