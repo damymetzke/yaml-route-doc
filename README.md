@@ -41,4 +41,4 @@ documenter.document("path/to/config.yml");
 
 ## More Documentation
 
-For more information about writing custom css please refer to the [CSS Guide](./doc/cssGuide.md)
+For more information about writing custom CSS please refer to the [CSS Guide](./doc/cssGuide.md)
